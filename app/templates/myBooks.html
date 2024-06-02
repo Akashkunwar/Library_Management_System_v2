@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add-Section</title>
+    <link rel="stylesheet" href="/static/add-section.css" />
+    {% include 'bootstrap.html' %}
+  </head>
+  <body>
+    <div>
+      {% include 'header.html' %}
+      <div>
+        <h3 class="firstHeading">Currently Issued Books</h3>
+        <div class="main-container">
+          {% for book in approvedBooks %}
+          <div class="section-container" id="1">
+            <h2>Book Name : {{book.Book_Title}}</h2>
+            <p>Request Date : {{book.RequestDate}}</p>
+            <p>Book Author : {{book.Author}}</p>
+            <p>Request Days : {{book.Days}}</p>
+            <p>
+              Book Link :
+              <a href="{{ url_for('download_book', filename=book.Book_Link) }}"
+                >Show Book</a
+              >
+            </p>
+            <div>
+              <p>Book Section : {{book.Section_Title}}</p>
+            </div>
+
+            <form action="/myBooks" method="post" style="display: inline">
+              <input type="hidden" name="id" value="{{book.IssueId}}" />
+              <input type="hidden" name="status" value="Expired" />
+              <button type="submit" class="btn btn-dark">Return</button>
+            </form>
+          </div>
+          {% endfor %}
+        </div>
+
+        <h3>Completed Books</h3>
+        <div class="main-container">
+          {% for book in expiredBooks %}
+          <div class="section-container" id="1">
+            <h2>Book Name : {{book.Book_Title}}</h2>
+            <p>Request Date : {{book.RequestDate}}</p>
+            <p>Book Author : {{book.Author}}</p>
+            <p>Request Days : {{book.Days}}</p>
+            <div>
+              <p>Book Section : {{book.Section_Title}}</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <h3>Requested Books</h3>
+        <div class="main-container">
+          {% for book in issueBooks %}
+          <div class="section-container" id="1">
+            <h2>Book Name : {{book.Book_Title}}</h2>
+            <p>Request Date : {{book.RequestDate}}</p>
+            <p>Book Author : {{book.Author}}</p>
+            <p>Request Days : {{book.Days}}</p>
+            <div>
+              <p>Book Section : {{book.Section_Title}}</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <h3>Request Rejected Books</h3>
+        <div class="main-container">
+          {% for book in rejectedBooks %}
+          <div class="section-container" id="1">
+            <h2>Book Name : {{book.Book_Title}}</h2>
+            <p>Request Date : {{book.RequestDate}}</p>
+            <p>Book Author : {{book.Author}}</p>
+            <p>Request Days : {{book.Days}}</p>
+            <div>
+              <p>Book Section : {{book.Section_Title}}</p>
+            </div>
+
+            <form action="/myBooks" method="post" style="display: inline">
+              <input type="hidden" name="id" value="{{book.IssueId}}" />
+              <input type="hidden" name="status" value="requested" />
+              <button type="submit" class="btn btn-primary">
+                Request Again
+              </button>
+            </form>
+          </div>
+          {% endfor %}
+        </div>
+        {% include 'footer.html' %}
+      </div>
+    </div>
+  </body>
+</html>

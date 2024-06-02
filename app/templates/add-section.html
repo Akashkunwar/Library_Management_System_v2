@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add-Section</title>
+    <link rel="stylesheet" href="/static/add-section.css" />
+    {% include 'bootstrap.html' %}
+  </head>
+  <body>
+    <div>
+      {% include 'headerAdmin.html' %}
+      <div>
+        <button type="button" id="addSection" class="btn btn-outline-primary">
+          + Add<br />Section
+        </button>
+        <form
+          id="addSectionPopup"
+          class="popup"
+          action="/add-section"
+          method="post"
+        >
+          <div class="popup-content">
+            <h1>Add Section</h1>
+            <div>
+              <h4>Section</h4>
+              <input
+                type="text"
+                name="section"
+                placeholder="Section Name"
+                required
+              />
+            </div>
+            <div>
+              <h4>Creation Date :</h4>
+              <input type="hidden" name="date" required />
+              <p id="current-date">Creation date</p>
+            </div>
+            <div>
+              <h4>Description</h4>
+              <textarea
+                name="text"
+                id="Description"
+                cols="50"
+                rows="4"
+                placeholder="Description"
+              ></textarea>
+            </div>
+            <div class="buttons">
+              <button class="btn btn-outline-primary" type="submit">
+                save
+              </button>
+              <button class="btn btn-primary" id="closePopup">Close</button>
+            </div>
+          </div>
+        </form>
+        <div class="main-container">
+          {% for sec in section %}
+          <div class="section-container" id="{{ sec.SectionId }}">
+            <h2>{{ sec.Title }}</h2>
+            <p>Date Created: {{ sec.CreatedDate }}</p>
+            <div>
+              <p>Description</p>
+              <p>{{ sec.Description }}</p>
+            </div>
+            <button
+              type="button"
+              id="addBook{{ sec.SectionId }}"
+              class="btn btn-primary"
+            >
+              Add Books
+            </button>
+
+            <form
+              action="{{ url_for('deleteSection', sectionId=sec.SectionId) }}"
+              method="post"
+              style="display: inline"
+            >
+              <button type="submit" class="btn btn-outline-danger">
+                Delete Section
+              </button>
+            </form>
+          </div>
+          {% include 'addBookPopup.html' %}{% endfor %}
+        </div>
+      </div>
+      {% include 'footer.html' %}
+    </div>
+    <script>
+      addSection.addEventListener("click", function () {
+        addSectionPopup.classList.add("show");
+      });
+
+      closePopup.addEventListener("click", function () {
+        addSectionPopup.classList.remove("show");
+      });
+
+      window.addEventListener("click", function (event) {
+        if (event.target == addSectionPopup) {
+          addSectionPopup.classList.remove("show");
+        }
+      });
+
+      const hiddenDateInput = document.querySelector('input[name="date"]');
+      const currentDate = document.getElementById("current-date");
+      const d = new Date();
+      const options = {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      };
+      const formattedDate = d.toLocaleDateString("en-GB", options);
+      currentDate.textContent = formattedDate;
+      hiddenDateInput.value = formattedDate;
+
+      const mainContainer = document.querySelector(".main-container");
+
+      mainContainer.addEventListener("click", function (event) {
+        if (
+          event.target.closest(".section-container") &&
+          !event.target.matches('[id^="addBook"]')
+        ) {
+          window.location.href = "/showBooks";
+        }
+        if (event.target.matches('[id^="addBook"]')) {
+          const sectionId = event.target.id.replace("addBook", "");
+          const popupId = `addBookPopup${sectionId}`;
+          const addBookPopup = document.getElementById(popupId);
+          if (addBookPopup) {
+            addBookPopup.classList.toggle("show");
+          }
+        }
+      });
+
+      const closeBookPopups = document.querySelectorAll(
+        '[id^="closeBookPopup"]'
+      );
+
+      closeBookPopups.forEach(function (closeButton) {
+        closeButton.addEventListener("click", function (event) {
+          event.preventDefault(); // Prevent form submission
+          const addBookPopup =
+            closeButton.parentElement.parentElement.parentElement;
+          if (addBookPopup) {
+            addBookPopup.classList.remove("show");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

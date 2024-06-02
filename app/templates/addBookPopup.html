@@ -1,0 +1,35 @@
+<form
+  id="addBookPopup{{ sec.SectionId }}"
+  class="popup"
+  action="/showBooks"
+  method="POST"
+  enctype="multipart/form-data"
+>
+  <div class="popup-content">
+    <h1>Add Books</h1>
+    <div>
+      <h4>Book Title :</h4>
+      <input type="text" name="Book-Title" placeholder="Book Name" required />
+    </div>
+    <div>
+      <h4>Author :</h4>
+      <input type="text" name="Author" placeholder="Author Name" required />
+    </div>
+    <div>
+      <h4>Content :</h4>
+      <input type="text" name="Content" placeholder="About this book" />
+    </div>
+    <div>
+      <h4>Book Section :</h4>
+      <input type="hidden" name="book_section" value="{{ sec.SectionId }}" />
+      <p id="current-section">{{ sec.Title }}</p>
+      <input type="file" name="file" required />
+    </div>
+    <div class="buttons">
+      <button class="btn btn-outline-primary" type="submit">save</button>
+      <button class="btn btn-primary" id="closeBookPopup{{ sec.SectionId }}">
+        Close
+      </button>
+    </div>
+  </div>
+</form>

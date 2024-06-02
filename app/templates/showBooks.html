@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add-Section</title>
+    <link rel="stylesheet" href="/static/add-section.css" />
+    {% include 'bootstrap.html' %}
+  </head>
+  <body>
+    <div>
+      {% include 'headerAdmin.html' %}
+      <div>
+        <div class="main-container">
+          {% for book in books %}
+          <div class="section-container" id="1">
+            <h2>{{book.Books_Title}}</h2>
+            <p>Book Author : {{book.Books_Author}}</p>
+            <p>
+              Book Link :
+              <a
+                href="{{ url_for('download_book', filename=book.Books_ImageLink) }}"
+                >Show Book</a
+              >
+            </p>
+            <div>
+              <p>Book Section : {{book.Section_Title}}</p>
+            </div>
+            <button
+              type="button"
+              id="showBook{{book.BookId}}"
+              class="btn btn-outline-primary"
+            >
+              Show
+            </button>
+            <button
+              type="button"
+              id="editBooks{{book.Books_BookId}}"
+              class="btn btn-outline-secondary"
+            >
+              Edit
+            </button>
+
+            <form
+              action="{{ url_for('deleteBook', bookId=book.Books_BookId) }}"
+              method="post"
+              style="display: inline"
+            >
+              <button type="submit" class="btn btn-outline-danger">
+                Delete
+              </button>
+            </form>
+          </div>
+          {% include 'editBookPopup.html' %} {% include 'showBookPopup.html' %}
+          {% endfor %}
+        </div>
+        {% include 'footer.html' %}
+      </div>
+    </div>
+    <script>
+      const mainContainer = document.querySelector(".main-container");
+      mainContainer.addEventListener("click", function (event) {
+        if (event.target.matches('[id^="showBook"]')) {
+          const sectionId = event.target.id.replace("showBook", "");
+          const popupId = `showBooksPopup${sectionId}`;
+          const showBooksPopup = document.getElementById(popupId);
+          if (showBooksPopup) {
+            showBooksPopup.classList.toggle("show");
+          }
+        } else if (event.target.matches('[id^="closeShowBooksPopup"]')) {
+          const closeButton = event.target;
+          const popup = closeButton.closest(".popup");
+          if (popup) {
+            popup.classList.remove("show");
+          }
+        } else if (event.target.matches('[id^="editBooks"]')) {
+          const sectionId = event.target.id.replace("editBooks", "");
+          const popupId = `editBooksPopup${sectionId}`;
+          const editBooksPopup = document.getElementById(popupId);
+          if (editBooksPopup) {
+            editBooksPopup.classList.toggle("show");
+          }
+        } else if (event.target.matches('[id^="closeEditBooksPopup"]')) {
+          const closeButton = event.target;
+          const popup = closeButton.closest(".popup");
+          if (popup) {
+            popup.classList.remove("show");
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

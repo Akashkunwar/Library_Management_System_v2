@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add-Section</title>
+    <link rel="stylesheet" href="/static/allBooks.css" />
+    {% include 'bootstrap.html' %}
+  </head>
+  <body>
+    {% include 'header.html' %}
+    <div>
+      <div>
+        <h2>fd</h2>
+        <p>Date Created: fge</p>
+        <div>
+          <p>Description</p>
+          <p>fsd</p>
+        </div>
+        <button type="button" id="addBook1" class="btn btn-primary">
+          Add Books
+        </button>
+
+        <form>
+          <button type="submit" class="btn btn-outline-danger">
+            Delete Section
+          </button>
+        </form>
+      </div>
+
+      <div class="section-heading">
+        <p>Book ID</p>
+        <p>Book Title</p>
+        <p>Book Section</p>
+
+        <p>Request</p>
+      </div>
+
+      {% for book in books %}
+      <div class="section-item">
+        <p>{{book.BookId}}</p>
+        <p>{{book.Title}}</p>
+        <p>{{book.SectionId}}</p>
+
+        <form>
+          <button type="submit" class="btn btn-outline-danger">
+            Request Book
+          </button>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="main-container"></div>
+    {% include 'footer.html' %}
+  </body>
+</html>

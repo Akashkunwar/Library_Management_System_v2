@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% include 'bootstrap.html' %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/index.css" />
+  </head>
+  <body>
+    {% include 'header.html' %} {% for book in book %}
+    <div class="book-card">
+      <div>
+        <div><b>Book Name : </b>{{book['Name']}}</div>
+        <div><b>Issue Date : </b> {{book['Date_created']}}</div>
+        <div><b>Description : </b> {{book['Description']}}</div>
+      </div>
+      <a href="/static/sample-pdf-file.pdf">Download PDF</a>
+    </div>
+    {% endfor %} {% include 'footer.html' %}
+  </body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    {% include 'bootstrap.html' %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/start.css" />
+    <title>Bookstop</title>
+  </head>
+  <body>
+    <div class="container">
+      <img src="/static/logo.jpg" alt="Logo" />
+      <div>
+        <a href="/librarian-login">
+          <button type="button" id="admin-btn" class="btn btn-primary">
+            Admin Login
+          </button>
+        </a>
+      </div>
+      <div>
+        <a href="/user-login">
+          <button type="button" id="user-btn" class="btn btn-outline-primary">
+            User Login
+          </button>
+        </a>
+      </div>
+    </div>
+  </body>
+</html>

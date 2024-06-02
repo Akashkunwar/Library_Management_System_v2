@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/static/login.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <img src="/static/logo.jpg" alt="Logo" />
+    <form class="container" action="/user-login" method="post">
+      <p class="error-message">{{error}}</p>
+      <h2>User Login</h2>
+      <div class="username">
+        <p>Username</p>
+        <input type="text" name="username" placeholder="Username" />
+      </div>
+      <div>
+        <p>Password</p>
+        <input type="password" name="password" placeholder="password" />
+      </div>
+      <button type="submit">Login</button>
+    </form>
+    <a href="/register">
+      <button id="sign-up" class="register">Sign Up</button>
+    </a>
+    <a href="/">
+      <button id="back" class="back">Back</button>
+    </a>
+  </body>
+</html>

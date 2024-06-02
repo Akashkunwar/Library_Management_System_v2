@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add-Section</title>
+    <link rel="stylesheet" href="/static/add-section.css" />
+    {% include 'bootstrap.html' %}
+    <style>
+      .image-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 20px;
+      }
+
+      .image-grid > div {
+        border: 1px solid #ccc;
+      }
+
+      .image-grid img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+      }
+
+      h2 {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      {% include header %}
+
+      <div style="margin: 40px; text-align: center">
+        <h1 style="margin-top: 100px; margin-bottom: 20px">Charts</h1>
+
+        <div class="image-grid">
+          <div>
+            <h2>{{Graph1}}</h2>
+            <img
+              src="/static/Graphs/graph1.png"
+              alt="Distribution of Users by Role"
+            />
+          </div>
+          <div>
+            <h2>{{Graph2}}</h2>
+            <img
+              src="/static/Graphs/graph2.png"
+              alt="Distribution of Users by Role"
+            />
+          </div>
+          <div>
+            <h2>{{Graph3}}</h2>
+            <img
+              src="/static/Graphs/graph3.png"
+              alt="Count of Books by Issue Status"
+            />
+          </div>
+          <div>
+            <h2>{{Graph4}}</h2>
+            <img
+              src="/static/Graphs/graph4.png"
+              alt="Count of Books by Section"
+            />
+          </div>
+        </div>
+      </div>
+
+      {% include 'footer.html' %}
+    </div>
+  </body>
+</html>

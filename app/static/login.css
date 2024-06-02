@@ -1,0 +1,134 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #2d2a2e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+.error-message {
+  color: red;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  padding: 50px 100px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  position: fixed;
+  right: 300px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* .error-message {
+  margin-top: -4px;
+} */
+
+.back {
+  position: absolute;
+  top: 32%;
+  right: 30.5%;
+  transform: translateY(-50%);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: bolder;
+  border: 2px solid #fff;
+}
+
+.back:hover {
+  background-color: #0056b3;
+}
+
+#back {
+  margin-left: 10px;
+}
+
+.register {
+  position: absolute;
+  top: 32%;
+  right: 17%;
+  transform: translateY(-50%);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: bolder;
+  border: 2px solid #fff;
+}
+
+.register:hover {
+  background-color: #0056b3;
+}
+
+#sign-up {
+  margin-left: 10px;
+}
+
+img {
+  width: 550px;
+  border-radius: 70px;
+  position: absolute;
+  left: 350px;
+  top: 200px;
+  border: 2px solid white;
+  box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.5);
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+p {
+  text-align: left;
+  color: #fff;
+  margin-bottom: 0;
+}
+
+input {
+  width: calc(100% - 16px);
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin: 5px 0;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+input::placeholder {
+  color: #ccc;
+}
+
+button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: bolder;
+}
+
+button:hover {
+  background-color: #0056b3;
+}

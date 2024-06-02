@@ -1,0 +1,21 @@
+<div id="showBooksPopup{{book.BookId}}" class="popup">
+  <div class="popup-content">
+    <h1>History Book class 10</h1>
+    <div id="current-section">
+      <h4>Book Title : {{book.Books_Title}}</h4>
+      <h4>Book Author : {{book.Books_Author}}</h4>
+      <h4>Book Section : {{book.Section_Title}}</h4>
+      <h4>
+        Link :
+        <a href="{{ url_for('download_book', filename=book.Books_ImageLink) }}"
+          >Show Book</a
+        >
+      </h4>
+      <div class="buttons">
+        <button class="btn btn-primary" id="closeShowBooksPopup{{book.BookId}}">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
