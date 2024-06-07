@@ -1,0 +1,42 @@
+<form
+  id="editSectionsPopup{{sec.SectionId}}"
+  class="popup"
+  action="/updateSections/{{sec.SectionId}}"
+  method="post"
+>
+  <div class="popup-content">
+    <h1>Edit Section</h1>
+    <div>
+      <h4>Section :</h4>
+      <input type="text" name="Title" placeholder="{{sec.Title}}" required />
+    </div>
+    <div>
+      <h4>Creation Date :</h4>
+      <input
+        type="text"
+        name="createdDate"
+        placeholder="{{sec.CreatedDate}}"
+        readonly
+      />
+    </div>
+    <div>
+      <h4>Description :</h4>
+      <textarea
+        name="Description"
+        id="Description"
+        cols="50"
+        rows="4"
+        placeholder="{{sec.Description}}"
+      ></textarea>
+    </div>
+    <div class="buttons">
+      <button class="btn btn-outline-primary" type="submit">save</button>
+      <button
+        class="btn btn-primary"
+        id="closeEditSectionPopup{{sec.SectionId}}"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</form>

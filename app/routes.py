@@ -96,6 +96,26 @@ def addSection():
         section = Section.query.all()
         return render_template("add-section.html", section = section)
 
+@app.route("/updateSections/<int:SectionId>", methods=["GET", "POST"])
+def updateSections(SectionId):
+    section = Section.query.get(SectionId)
+    if not section:
+        return "section not found", 404
+
+    if request.method == 'POST':
+        data = request.form.to_dict()
+        print(data)
+        section.Title = data['Title']
+        # section.Author = data['Author']
+        section.Description = data['Description']
+
+        db.session.commit()
+
+        return redirect(url_for('addSection'))
+    else:
+        section = Section.query.all()
+        return render_template("add-section.html", section=section)
+    
 @app.route("/showBooks", methods = ["GET","POST"])
 def showBooks():
     if 'admin_id' not in session:

@@ -68,39 +68,54 @@
               id="addBook{{ sec.SectionId }}"
               class="btn btn-primary"
             >
-              Add Books
+              + Books
             </button>
-
+            <button
+              type="button"
+              id="editSection{{sec.SectionId}}"
+              class="btn btn-outline-secondary"
+            >
+              Edit
+            </button>
             <form
               action="{{ url_for('deleteSection', sectionId=sec.SectionId) }}"
               method="post"
               style="display: inline"
             >
               <button type="submit" class="btn btn-outline-danger">
-                Delete Section
+                Delete
               </button>
             </form>
           </div>
-          {% include 'addBookPopup.html' %}{% endfor %}
+          {% include 'editSectionPopup.html' %} {% include 'addBookPopup.html'
+          %}{% endfor %}
         </div>
       </div>
       {% include 'footer.html' %}
     </div>
     <script>
-      addSection.addEventListener("click", function () {
-        addSectionPopup.classList.add("show");
-      });
+      // Show the add section popup
+      document
+        .getElementById("addSection")
+        .addEventListener("click", function () {
+          document.getElementById("addSectionPopup").classList.add("show");
+        });
 
-      closePopup.addEventListener("click", function () {
-        addSectionPopup.classList.remove("show");
-      });
+      // Close the add section popup
+      document
+        .getElementById("closePopup")
+        .addEventListener("click", function () {
+          document.getElementById("addSectionPopup").classList.remove("show");
+        });
 
+      // Close the add section popup when clicking outside of it
       window.addEventListener("click", function (event) {
-        if (event.target == addSectionPopup) {
-          addSectionPopup.classList.remove("show");
+        if (event.target == document.getElementById("addSectionPopup")) {
+          document.getElementById("addSectionPopup").classList.remove("show");
         }
       });
 
+      // Set the current date in the add section form
       const hiddenDateInput = document.querySelector('input[name="date"]');
       const currentDate = document.getElementById("current-date");
       const d = new Date();
@@ -113,39 +128,62 @@
       currentDate.textContent = formattedDate;
       hiddenDateInput.value = formattedDate;
 
-      const mainContainer = document.querySelector(".main-container");
-
-      mainContainer.addEventListener("click", function (event) {
-        if (
-          event.target.closest(".section-container") &&
-          !event.target.matches('[id^="addBook"]')
-        ) {
-          window.location.href = "/showBooks";
-        }
-        if (event.target.matches('[id^="addBook"]')) {
-          const sectionId = event.target.id.replace("addBook", "");
-          const popupId = `addBookPopup${sectionId}`;
-          const addBookPopup = document.getElementById(popupId);
-          if (addBookPopup) {
-            addBookPopup.classList.toggle("show");
+      // Handle clicks in the main container
+      document
+        .querySelector(".main-container")
+        .addEventListener("click", function (event) {
+          if (
+            event.target.closest(".section-container") &&
+            !event.target.matches('[id^="addBook"]') &&
+            !event.target.matches('[id^="editSection"]')
+          ) {
+            window.location.href = "/showBooks";
           }
-        }
-      });
 
-      const closeBookPopups = document.querySelectorAll(
-        '[id^="closeBookPopup"]'
-      );
+          if (event.target.matches('[id^="addBook"]')) {
+            const sectionId = event.target.id.replace("addBook", "");
+            const popupId = `addBookPopup${sectionId}`;
+            const addBookPopup = document.getElementById(popupId);
+            if (addBookPopup) {
+              addBookPopup.classList.toggle("show");
+            }
+          }
 
-      closeBookPopups.forEach(function (closeButton) {
-        closeButton.addEventListener("click", function (event) {
-          event.preventDefault(); // Prevent form submission
-          const addBookPopup =
-            closeButton.parentElement.parentElement.parentElement;
-          if (addBookPopup) {
-            addBookPopup.classList.remove("show");
+          if (event.target.matches('[id^="editSection"]')) {
+            const sectionId = event.target.id.replace("editSection", "");
+            const popupId = `editSectionsPopup${sectionId}`;
+            const editSectionPopup = document.getElementById(popupId);
+            if (editSectionPopup) {
+              editSectionPopup.classList.toggle("show");
+            }
           }
         });
-      });
+
+      // Close add book popups
+      document
+        .querySelectorAll('[id^="closeBookPopup"]')
+        .forEach(function (closeButton) {
+          closeButton.addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent form submission
+            const addBookPopup = closeButton.closest(".popup");
+            if (addBookPopup) {
+              addBookPopup.classList.remove("show");
+            }
+          });
+        });
+
+      // Close edit section popups
+      document
+        .querySelectorAll('[id^="closeEditSectionPopup"]')
+        .forEach(function (closeButton) {
+          closeButton.addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent form submission
+            const editSectionPopup = closeButton.closest(".popup");
+            if (editSectionPopup) {
+              editSectionPopup.classList.remove("show");
+            }
+          });
+        });
     </script>
   </body>
 </html>

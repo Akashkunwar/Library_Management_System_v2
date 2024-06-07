@@ -534,6 +534,24 @@ def deleteSection(sectionId):
         db.session.delete(section)
         db.session.commit()
     return redirect(url_for('addSection'))
+@app.route("/updateSections/<int:SectionId>", methods=["GET", "POST"])
+def updateSections(SectionId):
+    book = Section.query.get(SectionId)
+    if not book:
+        return "Book not found", 404
+
+    if request.method == 'POST':
+        data = request.form.to_dict()
+        book.Title = data['Title']
+        book.Author = data['Author']
+        book.Content = data['Content']
+
+        db.session.commit()
+
+        return redirect(url_for('showBooks'))
+    else:
+        books = Section.query.all()
+        return render_template("showBooks.html", books=books)
 
 @app.route("/updateBooks/<int:BooksId>", methods=["GET", "POST"])
 def updateBooks(BooksId):
