@@ -23,7 +23,10 @@
       <h4>Book Section :</h4>
       <input type="hidden" name="book_section" value="{{ sec.SectionId }}" />
       <p id="current-section">{{ sec.Title }}</p>
-      <input type="file" name="file" required />
+      <h4>Add Book :</h4>
+      <input type="file" name="file" accept=".pdf" required />
+      <h4>Add Image :</h4>
+      <input type="file" name="bookCover" accept=".png, .jpeg, .jpg" required />
     </div>
     <div class="buttons">
       <button class="btn btn-outline-primary" type="submit">save</button>

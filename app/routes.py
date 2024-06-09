@@ -125,7 +125,11 @@ def showBooks():
         f = request.files['file']
         new_filename = (data['Book-Title']+"_"+data['Author']+".pdf").replace(" ","_")
         file_path = os.path.join("app/books", new_filename)
-        f.save(file_path) 
+        f.save(file_path)
+        c = request.files['bookCover']
+        new_filename = (data['Book-Title']+"_"+data['Author']+".png").replace(" ","_")
+        file_path_image = os.path.join("app/bookCover", new_filename)
+        c.save(file_path_image) 
         books = Books(SectionId = data['book_section'],Title=data['Book-Title'],Author=data['Author'],Content=data['Content'], ImageLink=new_filename)
         db.session.add(books)
         db.session.commit()
