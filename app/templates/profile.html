@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+  </head>
+  <body>
+    {% include 'headerAdmin.html' %}
+    <section class="bg-light py-3 py-md-5 py-xl-8">
+      <div class="container">
+        <div class="row gy-4 gy-lg-0">
+          <div class="col-12 col-lg-4 col-xl-3">
+            <div class="row gy-4">
+              <div class="col-12">
+                <div class="card widget-card border-light shadow-sm">
+                  <div class="card-header text-bg-primary">
+                    Welcome, Ethan Leo
+                  </div>
+                  <div class="card-body">
+                    <div class="text-center mb-3">
+                      <img
+                        src="../ProfilePhoto/Techi_Teru.png"
+                        class="img-fluid rounded-circle"
+                        alt="Luna John"
+                      />
+                    </div>
+                    <h5 class="text-center mb-1">Ethan Leo</h5>
+                    <p class="text-center text-secondary mb-4">
+                      Project Manager
+                    </p>
+                    <ul class="list-group list-group-flush mb-4">
+                      <li
+                        class="list-group-item d-flex justify-content-between align-items-center"
+                      >
+                        <h6 class="m-0">Followers</h6>
+                        <span>7,854</span>
+                      </li>
+                      <li
+                        class="list-group-item d-flex justify-content-between align-items-center">
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="card widget-card border-light shadow-sm">
+                  <div class="card-header text-bg-primary">Social Accounts</div>
+                  <div class="card-body">
+                    <a
+                      href="#!"
+                      class="d-inline-block bg-dark link-light lh-1 p-2 rounded"
+                    >
+                      <i class="bi bi-envelope"></i>
+                    </a>
+                    <a
+                      href="#!"
+                      class="d-inline-block bg-dark link-light lh-1 p-2 rounded"
+                    >
+                      <i class="bi bi-telephone-fill"></i>
+                    </a>
+                    <a
+                      href="#!"
+                      class="d-inline-block bg-dark link-light lh-1 p-2 rounded"
+                    >
+                      <i class="bi bi-linkedin"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="card widget-card border-light shadow-sm">
+                  <div class="card-header text-bg-primary">About Me</div>
+                  <div class="card-body">
+                    <ul class="list-group list-group-flush mb-0">
+                      <li class="list-group-item">
+                        <h6 class="mb-1">
+                          <span class="bii bi-mortarboard-fill me-2"></span>
+                          Education
+                        </h6>
+                        <span>M.S Computer Science</span>
+                      </li>
+                      <li class="list-group-item">
+                        <h6 class="mb-1">
+                          <span class="bii bi-geo-alt-fill me-2"></span>
+                          Location
+                        </h6>
+                        <span>Mountain View, California</span>
+                      </li>
+                      <li class="list-group-item">
+                        <h6 class="mb-1">
+                          <span class="bii bi-building-fill-gear me-2"></span>
+                          Company
+                        </h6>
+                        <span>GitHub Inc</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="card widget-card border-light shadow-sm">
+                  <div class="card-header text-bg-primary">Skills</div>
+                  <div class="card-body">
+                    <span class="badge text-bg-primary">HTML</span>
+                    <span class="badge text-bg-primary">SCSS</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-lg-8 col-xl-9">
+            <div class="card widget-card border-light shadow-sm">
+              <div class="card-body p-4">
+                <ul class="nav nav-tabs" id="profileTab" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link active"
+                      id="overview-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#overview-tab-pane"
+                      type="button"
+                      role="tab"
+                      aria-controls="overview-tab-pane"
+                      aria-selected="true"
+                    >
+                      Overview
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link"
+                      id="profile-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#profile-tab-pane"
+                      type="button"
+                      role="tab"
+                      aria-controls="profile-tab-pane"
+                      aria-selected="false"
+                    >
+                      Profile
+                    </button>
+                  </li>
+                </ul>
+                <div class="tab-content pt-4" id="profileTabContent">
+                  <div
+                    class="tab-pane fade show active"
+                    id="overview-tab-pane"
+                    role="tabpanel"
+                    aria-labelledby="overview-tab"
+                    tabindex="0"
+                  >
+                    <h5 class="mb-3">About</h5>
+                    <p class="lead mb-3">
+                      Ethan Leo is a seasoned and results-driven Project Manager
+                      who brings experience and expertise to project management.
+                      With a proven track record of successfully delivering
+                      complex projects on time and within budget, Ethan Leo is
+                      the go-to professional for organizations seeking efficient
+                      and effective project leadership.
+                    </p>
+                    <h5 class="mb-3">Profile</h5>
+                    <div class="row g-0">
+                      <div
+                        class="col-5 col-md-3 bg-light border-bottom border-white border-3"
+                      >
+                        <div class="p-2">First Name</div>
+                      </div>
+                      <div
+                        class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3"
+                      >
+                        <div class="p-2">Ethan</div>
+                      </div>
+                      <div
+                        class="col-5 col-md-3 bg-light border-bottom border-white border-3"
+                      >
+                        <div class="p-2">Last Name</div>
+                      </div>
+                      <div
+                        class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3"
+                      >
+                        <div class="p-2">Leo</div>
+                      </div>
+                      <div
+                        class="col-5 col-md-3 bg-light border-bottom border-white border-3"
+                      >
+                        <div class="p-2">Education</div>
+                      </div>
+                      <div
+                        class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3"
+                      >
+                        <div class="p-2">M.S Computer Science</div>
+                      </div>
+                      <div
+                        class="col-5 col-md-3 bg-light border-bottom border-white border-3"
+                      >
+                        <div class="p-2">Address</div>
+                      </div>
+                      <div
+                        class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3"
+                      >
+                        <div class="p-2">Mountain View, California</div>
+                      </div>
+                      <div
+                        class="col-5 col-md-3 bg-light border-bottom border-white border-3"
+                      >
+                        <div class="p-2">Country</div>
+                      </div>
+                      <div
+                        class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3"
+                      >
+                        <div class="p-2">United States</div>
+                      </div>
+                      <div
+                        class="col-5 col-md-3 bg-light border-bottom border-white border-3"
+                      >
+                        <div class="p-2">Job</div>
+                      </div>
+                      <div
+                        class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3"
+                      >
+                        <div class="p-2">Project Manager</div>
+                      </div>
+                      <div
+                        class="col-5 col-md-3 bg-light border-bottom border-white border-3"
+                      >
+                        <div class="p-2">Company</div>
+                      </div>
+                      <div
+                        class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3"
+                      >
+                        <div class="p-2">GitHub Inc</div>
+                      </div>
+                      <div
+                        class="col-5 col-md-3 bg-light border-bottom border-white border-3"
+                      >
+                        <div class="p-2">Phone</div>
+                      </div>
+                      <div
+                        class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3"
+                      >
+                        <div class="p-2">+1 (248) 679-8745</div>
+                      </div>
+                      <div
+                        class="col-5 col-md-3 bg-light border-bottom border-white border-3"
+                      >
+                        <div class="p-2">Email</div>
+                      </div>
+                      <div
+                        class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3"
+                      >
+                        <div class="p-2">leo@example.com</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="tab-pane fade"
+                    id="profile-tab-pane"
+                    role="tabpanel"
+                    aria-labelledby="profile-tab"
+                    tabindex="0"
+                  >
+                    <form action="#!" class="row gy-3 gy-xxl-4">
+                      <div class="col-12">
+                        <div class="row gy-2">
+                          <label class="col-12 form-label m-0"
+                            >Profile Image</label
+                          >
+                          <div class="col-12">
+                            <img
+                              src="../ProfilePhoto/Techi_Teru.png"
+                              class="img-fluid"
+                              alt="Luna John"
+                            />
+                          </div>
+                          <div class="col-12">
+                            <a
+                              href="#!"
+                              class="d-inline-block bg-primary link-light lh-1 p-2 rounded"
+                            >
+                              <i class="bi bi-upload"></i>
+                            </a>
+                            <a
+                              href="#!"
+                              class="d-inline-block bg-danger link-light lh-1 p-2 rounded"
+                            >
+                              <i class="bi bi-trash"></i>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <label for="inputFirstName" class="form-label"
+                          >First Name</label
+                        >
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="inputFirstName"
+                            placeholder="John"
+                        />
+
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <label for="inputLastName" class="form-label"
+                          >Last Name</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="inputLastName"
+                          placeholder="Doe"
+                        />
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <label for="inputEducation" class="form-label"
+                          >Education</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="inputEducation"
+                          placeholder="M.S Computer Science"
+                        />
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <label for="inputSkills" class="form-label"
+                          >Skills</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="inputSkills"
+                          placeholder="HTML, SCSS, Javascript, React, Vue, Angular, UI, UX"
+                        />
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <label for="inputJob" class="form-label">Job</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="inputJob"
+                          placeholder="Project Manager"
+                        />
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <label for="inputCompany" class="form-label"
+                          >Company</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="inputCompany"
+                          placeholder="GitHub Inc"
+                        />
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <label for="inputPhone" class="form-label">Phone</label>
+                        <input
+                          type="tel"
+                          class="form-control"
+                          id="inputPhone"
+                          placeholder="+12486798745"
+                        />
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <label for="inputEmail" class="form-label">Email</label>
+                        <input
+                          type="email"
+                          class="form-control"
+                          id="inputEmail"
+                          placeholder="leo@example.com"
+                        />
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <label for="inputAddress" class="form-label"
+                          >Address</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="inputAddress"
+                          placeholder="Mountain View, California"
+                        />
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <label for="inputCountry" class="form-label"
+                          >Country</label
+                        >
+                        <select class="form-select" id="inputCountry">
+                          <option value="Afghanistan">Afghanistan</option>
+                          <option value="Åland Islands">Åland Islands</option>
+                        </select>
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <label for="inputYouTube" class="form-label"
+                          >YouTube</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="inputYouTube"
+                          placeholder="https://www.youtube.com/EthanLeo"
+                        />
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <label for="inputX" class="form-label">X</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="inputX"
+                          placeholder="https://twitter.com/EthanLeo"
+                        />
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <label for="inputFacebook" class="form-label"
+                          >Facebook</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="inputFacebook"
+                          placeholder="https://www.facebook.com/EthanLeo"
+                        />
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <label for="inputLinkedIn" class="form-label"
+                          >LinkedIn</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="inputLinkedIn"
+                          placeholder="https://www.linkedin.com/EthanLeo"
+                        />
+                      </div>
+                      <div class="col-12">
+                        <label for="inputAbout" class="form-label">About</label>
+                        <textarea class="form-control" id="inputAbout" placeholder="This is just for testing purpuse I don't know What i am writing"></textarea>
+                      </div>
+                      <div class="col-12">
+                        <button type="submit" class="btn btn-primary">
+                          Save Changes
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script src="https://unpkg.com/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    {% include 'footer.html' %}
+  </body>
+</html>

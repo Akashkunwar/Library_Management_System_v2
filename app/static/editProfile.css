@@ -1,0 +1,243 @@
+/* General Styles */
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #f3f4f7;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 100vh;
+}
+
+/* Wrapper Styles */
+.page-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  padding: 130px 0 100px;
+  box-sizing: border-box;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.card {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-4 {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 40px;
+}
+
+.card-body {
+  padding: 0;
+}
+
+/* Title Styles */
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Input Group Styles */
+.input-group {
+  margin-bottom: 20px;
+}
+
+.label {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 5px;
+  display: block;
+  margin-right: 40px;
+}
+
+.input--style-4 {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 14px;
+  color: #333;
+  background-color: #fff;
+}
+
+.input-group-icon {
+  position: relative;
+}
+
+.input-group-icon input {
+  padding-right: 40px;
+}
+
+.input-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+  font-size: 18px;
+}
+
+/* Row Styles */
+.row-space .col-2 {
+  width: calc(50% - 10px);
+}
+
+.row-space .col-2:first-child {
+  margin-right: 20px;
+}
+
+/* Gender Radio Styles */
+.p-t-10 {
+  padding-top: 10px;
+}
+
+.radio-container {
+  display: inline-block;
+  position: relative;
+  padding-left: 30px;
+  margin-right: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  user-select: none;
+}
+
+.radio-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #ddd;
+  border-radius: 50%;
+}
+
+.radio-container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+.radio-container input:checked ~ .checkmark {
+  background-color: #667eea;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.radio-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.radio-container .checkmark:after {
+  top: 7px;
+  left: 7px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: white;
+}
+
+/* Select Styles */
+.select2-container--default .select2-selection--single {
+  height: 40px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 14px;
+  color: #333;
+  background-color: #fff;
+}
+
+.select2-container--default
+  .select2-selection--single
+  .select2-selection__arrow {
+  height: 38px;
+  right: 10px;
+  top: 1px;
+}
+
+.select2-container--default
+  .select2-selection--single
+  .select2-selection__rendered {
+  padding-left: 0;
+}
+
+/* Button Styles */
+.btn {
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.btn--blue {
+  background-color: #667eea;
+  color: #fff;
+}
+
+.btn--blue:hover {
+  background-color: #5563d0;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .row-space .col-2 {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+
+  .select2-container--default .select2-selection--single {
+    width: 100%;
+  }
+
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Header and Footer Styles */
+header,
+footer {
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px 0;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 1000;
+}

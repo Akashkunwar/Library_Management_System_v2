@@ -11,6 +11,28 @@ import matplotlib.pyplot as plt
 def home():
     return render_template("start.html")
 
+@app.route("/profile", methods = ["GET", "POST"])
+def profile():
+    if ('admin_id' or 'user_id') not in session:
+        return redirect(url_for('home'))
+    if request.method=='POST':
+        data = request.form.to_dict()
+        print(data)
+        return render_template('profile.html')
+    else:
+        return render_template('profile.html')
+
+@app.route("/add-profile", methods = ["GET", "POST"])
+def add_profile():
+    if ('admin_id' or 'user_id') not in session:
+        return redirect(url_for('home'))
+    if request.method=='POST':
+        data = request.form.to_dict()
+        print(data)
+        return render_template('editProfile.html')
+    else:
+        return render_template('editProfile.html')
+    
 @app.route("/user-login", methods = ["GET","POST"])
 def userLogin():
     if 'user_id' in session:
