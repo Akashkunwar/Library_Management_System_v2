@@ -17,21 +17,62 @@ def profile():
         return redirect(url_for('home'))
     if request.method=='POST':
         data = request.form.to_dict()
+        print(session)
         print(data)
+        if 'admin_id' in session:
+            id = session['admin_id']
+        if 'user_id' in session:
+            id = session['user_id']
+        print(id)
+        user = User.query.get(id)
+        print('user : ',user)
+        user.Name = data['inputFirstName']+' '+data['inputLastName']
+        user.Email = data['inputEmail']
+        user.Department = data['inputDepartment']
+        user.Description = data['inputAbout']
+        user.Phone_No = data['inputPhone']
+        user.DOB = data['inputDate']
+        user.Gender = data['inputGender']
+        user.Education = data['inputEducation']
+        user.Job = data['inputJob']
+        user.City = data['inputCity']
+        user.Linkedin = data['inputLinkedIn']
+        user.Favourate_Books = data['inputFabourateBooks']
+        db.session.commit()
+
+        # {'inputFirstName': 'fd', 'inputLastName': 'gdsf', 'inputEducation': '', 'inputSkills': '', 'inputJob': '', 'inputDate': '', 'inputPhone': '', 'inputEmail': '', 'inputAddress': '', 'inputDepartment': 'Electrical', 'inputGender': 'Male', 'inputLinkedIn': '', 'inputAbout': ''}
         return render_template('profile.html')
     else:
         return render_template('profile.html')
 
-@app.route("/add-profile", methods = ["GET", "POST"])
-def add_profile():
-    if ('admin_id' or 'user_id') not in session:
-        return redirect(url_for('home'))
-    if request.method=='POST':
-        data = request.form.to_dict()
-        print(data)
-        return render_template('editProfile.html')
-    else:
-        return render_template('editProfile.html')
+
+    # if not section:
+    #     return "section not found", 404
+
+    # if request.method == 'POST':
+    #     data = request.form.to_dict()
+    #     print(data)
+    #     section.Title = data['Title']
+    #     # section.Author = data['Author']
+    #     section.Description = data['Description']
+
+    #     db.session.commit()
+
+    #     return redirect(url_for('addSection'))
+    # else:
+    #     section = Section.query.all()
+    #     return render_template("add-section.html", section=section)
+    
+# @app.route("/add-profile", methods = ["GET", "POST"])
+# def add_profile():
+#     if ('admin_id' or 'user_id') not in session:
+#         return redirect(url_for('home'))
+#     if request.method=='POST':
+#         data = request.form.to_dict()
+#         print(data)
+#         return render_template('editProfile.html')
+#     else:
+#         return render_template('editProfile.html')
     
 @app.route("/user-login", methods = ["GET","POST"])
 def userLogin():

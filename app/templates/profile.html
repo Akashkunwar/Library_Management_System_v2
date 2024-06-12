@@ -23,7 +23,7 @@
               <div class="col-12">
                 <div class="card widget-card border-light shadow-sm">
                   <div class="card-header text-bg-primary">
-                    Welcome, Ethan Leo
+                    Welcome, John Doe
                   </div>
                   <div class="card-body">
                     <div class="text-center mb-3">
@@ -33,9 +33,9 @@
                         alt="Luna John"
                       />
                     </div>
-                    <h5 class="text-center mb-1">Ethan Leo</h5>
+                    <h5 class="text-center mb-1">John Doe</h5>
                     <p class="text-center text-secondary mb-4">
-                      Project Manager
+                      userID
                     </p>
                     <ul class="list-group list-group-flush mb-4">
                       <li
@@ -84,21 +84,21 @@
                           <span class="bii bi-mortarboard-fill me-2"></span>
                           Education
                         </h6>
-                        <span>M.S Computer Science</span>
+                        <span>Demo University</span>
                       </li>
                       <li class="list-group-item">
                         <h6 class="mb-1">
                           <span class="bii bi-geo-alt-fill me-2"></span>
                           Location
                         </h6>
-                        <span>Mountain View, California</span>
+                        <span>Demo Country</span>
                       </li>
                       <li class="list-group-item">
-                        <h6 class="mb-1">
+                        <h class="mb-1">
                           <span class="bii bi-building-fill-gear me-2"></span>
                           Company
-                        </h6>
-                        <span>GitHub Inc</span>
+                        </h 6>
+                        <span>Demo Company</span>
                       </li>
                     </ul>
                   </div>
@@ -106,7 +106,7 @@
               </div>
               <div class="col-12">
                 <div class="card widget-card border-light shadow-sm">
-                  <div class="card-header text-bg-primary">Skills</div>
+                  <div class="card-header text-bg-primary">Favourate Books</div>
                   <div class="card-body">
                     <span class="badge text-bg-primary">HTML</span>
                     <span class="badge text-bg-primary">SCSS</span>
@@ -170,22 +170,12 @@
                       <div
                         class="col-5 col-md-3 bg-light border-bottom border-white border-3"
                       >
-                        <div class="p-2">First Name</div>
+                        <div class="p-2">Name</div>
                       </div>
                       <div
                         class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3"
                       >
-                        <div class="p-2">Ethan</div>
-                      </div>
-                      <div
-                        class="col-5 col-md-3 bg-light border-bottom border-white border-3"
-                      >
-                        <div class="p-2">Last Name</div>
-                      </div>
-                      <div
-                        class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3"
-                      >
-                        <div class="p-2">Leo</div>
+                        <div class="p-2">John Doe</div>
                       </div>
                       <div
                         class="col-5 col-md-3 bg-light border-bottom border-white border-3"
@@ -200,22 +190,22 @@
                       <div
                         class="col-5 col-md-3 bg-light border-bottom border-white border-3"
                       >
-                        <div class="p-2">Address</div>
+                        <div class="p-2">Department</div>
                       </div>
                       <div
                         class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3"
                       >
-                        <div class="p-2">Mountain View, California</div>
+                        <div class="p-2">Engineering</div>
                       </div>
                       <div
                         class="col-5 col-md-3 bg-light border-bottom border-white border-3"
                       >
-                        <div class="p-2">Country</div>
+                        <div class="p-2">DOB</div>
                       </div>
                       <div
                         class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3"
                       >
-                        <div class="p-2">United States</div>
+                        <div class="p-2">20/10/2000</div>
                       </div>
                       <div
                         class="col-5 col-md-3 bg-light border-bottom border-white border-3"
@@ -230,12 +220,12 @@
                       <div
                         class="col-5 col-md-3 bg-light border-bottom border-white border-3"
                       >
-                        <div class="p-2">Company</div>
+                        <div class="p-2">Gender</div>
                       </div>
                       <div
                         class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3"
                       >
-                        <div class="p-2">GitHub Inc</div>
+                        <div class="p-2">Mail</div>
                       </div>
                       <div
                         class="col-5 col-md-3 bg-light border-bottom border-white border-3"
@@ -257,6 +247,16 @@
                       >
                         <div class="p-2">leo@example.com</div>
                       </div>
+                      <div
+                        class="col-5 col-md-3 bg-light border-bottom border-white border-3"
+                      >
+                        <div class="p-2">City</div>
+                      </div>
+                      <div
+                        class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3"
+                      >
+                        <div class="p-2">Demo</div>
+                      </div>
                     </div>
                   </div>
                   <div
@@ -266,7 +266,7 @@
                     aria-labelledby="profile-tab"
                     tabindex="0"
                   >
-                    <form action="#!" class="row gy-3 gy-xxl-4">
+                    <form id="Profile" action="/profile" method="post" class="row gy-3 gy-xxl-4">
                       <div class="col-12">
                         <div class="row gy-2">
                           <label class="col-12 form-label m-0"
@@ -302,7 +302,7 @@
                         <input
                             type="text"
                             class="form-control"
-                            id="inputFirstName"
+                            name="inputFirstName"
                             placeholder="John"
                         />
 
@@ -314,7 +314,7 @@
                         <input
                           type="text"
                           class="form-control"
-                          id="inputLastName"
+                          name="inputLastName"
                           placeholder="Doe"
                         />
                       </div>
@@ -325,19 +325,19 @@
                         <input
                           type="text"
                           class="form-control"
-                          id="inputEducation"
+                          name="inputEducation"
                           placeholder="M.S Computer Science"
                         />
                       </div>
                       <div class="col-12 col-md-6">
-                        <label for="inputSkills" class="form-label"
-                          >Skills</label
+                        <label for="inputFabourateBooks" class="form-label"
+                          >Favourate Books</label
                         >
                         <input
                           type="text"
                           class="form-control"
-                          id="inputSkills"
-                          placeholder="HTML, SCSS, Javascript, React, Vue, Angular, UI, UX"
+                          name="inputFabourateBooks"
+                          placeholder="Rich dad poor dad, Harry Potter" 
                         />
                       </div>
                       <div class="col-12 col-md-6">
@@ -345,18 +345,18 @@
                         <input
                           type="text"
                           class="form-control"
-                          id="inputJob"
+                          name="inputJob"
                           placeholder="Project Manager"
                         />
                       </div>
                       <div class="col-12 col-md-6">
-                        <label for="inputCompany" class="form-label"
-                          >Company</label
+                        <label for="inputDate" class="form-label"
+                          >DOB</label
                         >
                         <input
-                          type="text"
+                          type="date"
                           class="form-control"
-                          id="inputCompany"
+                          name="inputDate"
                           placeholder="GitHub Inc"
                         />
                       </div>
@@ -365,8 +365,8 @@
                         <input
                           type="tel"
                           class="form-control"
-                          id="inputPhone"
-                          placeholder="+12486798745"
+                          name="inputPhone"
+                          placeholder="+919486798745"
                         />
                       </div>
                       <div class="col-12 col-md-6">
@@ -374,60 +374,38 @@
                         <input
                           type="email"
                           class="form-control"
-                          id="inputEmail"
-                          placeholder="leo@example.com"
+                          name="inputEmail"
+                          placeholder="john@example.com"
                         />
                       </div>
                       <div class="col-12 col-md-6">
-                        <label for="inputAddress" class="form-label"
-                          >Address</label
+                        <label for="inputCity" class="form-label"
+                          >City</label
                         >
                         <input
                           type="text"
                           class="form-control"
-                          id="inputAddress"
-                          placeholder="Mountain View, California"
+                          name="inputCity"
+                          placeholder="California"
                         />
                       </div>
                       <div class="col-12 col-md-6">
-                        <label for="inputCountry" class="form-label"
-                          >Country</label
+                        <label for="inputDepartment" class="form-label"
+                          >Department</label
                         >
-                        <select class="form-select" id="inputCountry">
-                          <option value="Afghanistan">Afghanistan</option>
-                          <option value="Åland Islands">Åland Islands</option>
+                        <select class="form-select" name="inputDepartment">
+                          <option value="Electrical">Electrical</option>
+                          <option value="CS">CS</option>
                         </select>
                       </div>
                       <div class="col-12 col-md-6">
-                        <label for="inputYouTube" class="form-label"
-                          >YouTube</label
+                        <label for="inputGender" class="form-label"
+                          >Gender</label
                         >
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="inputYouTube"
-                          placeholder="https://www.youtube.com/EthanLeo"
-                        />
-                      </div>
-                      <div class="col-12 col-md-6">
-                        <label for="inputX" class="form-label">X</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="inputX"
-                          placeholder="https://twitter.com/EthanLeo"
-                        />
-                      </div>
-                      <div class="col-12 col-md-6">
-                        <label for="inputFacebook" class="form-label"
-                          >Facebook</label
-                        >
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="inputFacebook"
-                          placeholder="https://www.facebook.com/EthanLeo"
-                        />
+                        <select class="form-select" name="inputGender">
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                        </select>
                       </div>
                       <div class="col-12 col-md-6">
                         <label for="inputLinkedIn" class="form-label"
@@ -436,13 +414,13 @@
                         <input
                           type="text"
                           class="form-control"
-                          id="inputLinkedIn"
+                          name="inputLinkedIn"
                           placeholder="https://www.linkedin.com/EthanLeo"
                         />
                       </div>
                       <div class="col-12">
                         <label for="inputAbout" class="form-label">About</label>
-                        <textarea class="form-control" id="inputAbout" placeholder="This is just for testing purpuse I don't know What i am writing"></textarea>
+                        <textarea class="form-control" name="inputAbout" placeholder="This is just for testing purpuse I don't know What i am writing"></textarea>
                       </div>
                       <div class="col-12">
                         <button type="submit" class="btn btn-primary">
