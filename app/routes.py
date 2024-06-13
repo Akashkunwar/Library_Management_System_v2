@@ -7,8 +7,10 @@ import datetime
 from sqlalchemy import func, and_
 import matplotlib.pyplot as plt
 
+
 @app.route("/", methods = ["GET","POST"])
 def home():
+    session.clear()
     return render_template("start.html")
 
 @app.route("/profile", methods = ["GET", "POST"])
@@ -39,40 +41,9 @@ def profile():
         user.Linkedin = data['inputLinkedIn']
         user.Favourate_Books = data['inputFabourateBooks']
         db.session.commit()
-
-        # {'inputFirstName': 'fd', 'inputLastName': 'gdsf', 'inputEducation': '', 'inputSkills': '', 'inputJob': '', 'inputDate': '', 'inputPhone': '', 'inputEmail': '', 'inputAddress': '', 'inputDepartment': 'Electrical', 'inputGender': 'Male', 'inputLinkedIn': '', 'inputAbout': ''}
         return render_template('profile.html')
     else:
         return render_template('profile.html')
-
-
-    # if not section:
-    #     return "section not found", 404
-
-    # if request.method == 'POST':
-    #     data = request.form.to_dict()
-    #     print(data)
-    #     section.Title = data['Title']
-    #     # section.Author = data['Author']
-    #     section.Description = data['Description']
-
-    #     db.session.commit()
-
-    #     return redirect(url_for('addSection'))
-    # else:
-    #     section = Section.query.all()
-    #     return render_template("add-section.html", section=section)
-    
-# @app.route("/add-profile", methods = ["GET", "POST"])
-# def add_profile():
-#     if ('admin_id' or 'user_id') not in session:
-#         return redirect(url_for('home'))
-#     if request.method=='POST':
-#         data = request.form.to_dict()
-#         print(data)
-#         return render_template('editProfile.html')
-#     else:
-#         return render_template('editProfile.html')
     
 @app.route("/user-login", methods = ["GET","POST"])
 def userLogin():
@@ -132,7 +103,7 @@ def librarianLogin():
         try:
             user = User.query.filter_by(UserName=data['username']).first()
             if user:
-                if user.Password == data["password"]:
+                if user.Password == data["password"] and user.Role == 'admin':
                     session['admin_id'] = user.UserId
                     return redirect(url_for('requestedBooks'))
                 else:

@@ -8,6 +8,19 @@ class User(db.Model):
     UserName = db.Column(db.String(20), unique=True, nullable=False)
     Password = db.Column(db.String(40), nullable=False)
     Role = db.Column(db.String(20), nullable=False)
+    # Content = db.Column(db.Text)
+    Name = db.Column(db.Text)
+    Email = db.Column(db.Text)
+    Department = db.Column(db.Text)
+    Description = db.Column(db.Text)
+    Phone_No = db.Column(db.Text)
+    DOB = db.Column(db.Text)
+    Gender = db.Column(db.Text)
+    Education = db.Column(db.Text)
+    Job = db.Column(db.Text)
+    City = db.Column(db.Text)
+    Linkedin = db.Column(db.Text)
+    Favourate_Books = db.Column(db.Text)
 
 class Section(db.Model):
     __tablename__ = 'section'
