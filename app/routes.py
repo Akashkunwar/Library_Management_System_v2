@@ -1,10 +1,10 @@
 from app import app, db
-from flask import render_template, request, redirect, url_for, send_file, session, flash
+from flask import render_template, request, redirect, url_for, send_file, session, jsonify
 from app.models import User, Section, Books, BookIssue, BookIssueMerge, BookSection
 import seaborn as sns
 import os
 import datetime
-from sqlalchemy import func, and_
+from sqlalchemy import func, and_, or_
 import matplotlib.pyplot as plt
 
 
@@ -210,6 +210,13 @@ def updateBooks(BooksId):
     else:
         books = Books.query.all()
         return render_template("showBooks.html", books=books)
+    
+@app.route("/submit_rating", methods=["POST"])
+def submit_rating():
+    if request.method == 'POST':
+        data = request.json
+        print(data)
+
 
 @app.route("/allBooks", methods=["GET","POST"])
 def allBooks():
@@ -217,13 +224,21 @@ def allBooks():
         return redirect(url_for('userLogin'))
     if request.method == 'POST':
         data = request.form.to_dict()
-        requstBook = BookIssue(UserId=session['user_id'], BookId=data['bookid'], SectionId=data['sectionId'], Days=data['days'], IssueStatus = 'requested', IssueDate = datetime.datetime.today().date())
-        db.session.add(requstBook)
-        db.session.commit()
+        count_query = db.session.query(func.count()).filter(and_(BookIssue.UserId == session['user_id'],or_(BookIssue.IssueStatus == 'requested',BookIssue.IssueStatus == 'Approved'))).scalar()
+        print(count_query)
+        if count_query<5:
+            requstBook = BookIssue(UserId=session['user_id'], BookId=data['bookid'], SectionId=data['sectionId'], Days=data['days'], IssueStatus = 'requested', IssueDate = datetime.datetime.today().date())
+            db.session.add(requstBook)
+            db.session.commit()
 
-        bookSec = BookSection.query.all()
-        userid = session['user_id']
-        return render_template("allBooks.html", books=bookSec, userid = userid)
+            bookSec = BookSection.query.all()
+            userid = session['user_id']
+            return render_template("allBooks.html", books=bookSec, userid = userid)
+        else:
+            bookSec = BookSection.query.all()
+            userid = request.args.get('userid')
+            return render_template("allBooks.html", books=bookSec, userid = userid, message = "You have already requested maximum limit 5 books. Please return book or wait for approval")
+
     else:
         bookSec = BookSection.query.all()
         userid = request.args.get('userid')

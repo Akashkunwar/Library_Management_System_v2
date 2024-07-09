@@ -50,6 +50,8 @@ class BookIssue(db.Model):
     IssueDate = db.Column(db.String)
     IssueStatus = db.Column(db.String, nullable=False)
     LastIssueStatusDate = db.Column(db.String)
+    Rating = db.Column(db.Text)
+    Review = db.Column(db.Text)
 
 class BookIssueMerge(db.Model):
     __tablename__ = 'book_issue_merge'

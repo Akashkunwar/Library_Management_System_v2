@@ -9,14 +9,13 @@ import matplotlib
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
 import seaborn as sns
-import requests
 
 current_dir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 
 app.secret_key = 'B00KL1BRARYS4S7EM'
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///../library.db"
-# app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///"+os.path.join(current_dir,"library.db")
+
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///"+os.path.join(current_dir,"library.db")
 db = SQLAlchemy()
 db.init_app(app)
 app.app_context().push()
@@ -413,64 +412,26 @@ update_issue_status()
 def home():
     return render_template("start.html")
 
-@app.route("/user-login", methods=["GET", "POST"])
+@app.route("/user-login", methods = ["GET","POST"])
 def userLogin():
     if 'user_id' in session:
         return redirect(url_for('allBooks', userid=session['user_id']))
-    
     if request.method == 'POST':
         data = request.form.to_dict()
-        username = data.get('username')
-        password = data.get('password')
-        
-        if not username or not password:
-            return render_template("user-login.html", error="Username and password are required")
-        
         try:
-            response = requests.get(f'http://localhost:5000/API/Users')
-            print(response)
-            if response.status_code == 200:
-                users = response.json()
-                print(users)
-                user = next((u for u in users if u['UserName'] == username), None)
-                
-                if user:
-                    if user['Password'] == password and user['Role'] == 'user':
-                        session['user_id'] = user['UserId']
-                        return redirect(url_for('myBooks'))
-                    else:
-                        return render_template("user-login.html", error="Wrong Password")
+            user = User.query.filter_by(UserName=data['username']).first()
+            if user:
+                if user.Password == data["password"] and user.Role == 'user':
+                    session['user_id'] = user.UserId
+                    return redirect(url_for('myBooks'))
                 else:
-                    return render_template("user-login.html", error="No user with this Username")
+                    return render_template("user-login.html", error="Wrong Password")
             else:
-                return render_template("user-login.html", error="Error fetching user data")
-        
-        except Exception as e:
-            return render_template("user-login.html", error="Error fetching user data")
-    
+                return render_template("user-login.html", error="No user with this Username")
+        except:
+            return render_template("user-login.html", error="No user with this Username")
     else:
         return render_template("user-login.html")
-    
-# @app.route("/user-login", methods = ["GET","POST"])
-# def userLogin():
-#     if 'user_id' in session:
-#         return redirect(url_for('allBooks', userid=session['user_id']))
-#     if request.method == 'POST':
-#         data = request.form.to_dict()
-#         try:
-#             user = User.query.filter_by(UserName=data['username']).first()
-#             if user:
-#                 if user.Password == data["password"] and user.Role == 'user':
-#                     session['user_id'] = user.UserId
-#                     return redirect(url_for('myBooks'))
-#                 else:
-#                     return render_template("user-login.html", error="Wrong Password")
-#             else:
-#                 return render_template("user-login.html", error="No user with this Username")
-#         except:
-#             return render_template("user-login.html", error="No user with this Username")
-#     else:
-#         return render_template("user-login.html")
 
 @app.route("/logout", methods = ["GET", "POST"])
 def logout():
@@ -483,64 +444,22 @@ def logout():
     else:
         return redirect(url_for('home'))
 
-@app.route("/register", methods=["GET", "POST"])
+@app.route("/register", methods = ["GET","POST"])
 def userRegister():
     if 'user_id' in session:
         return redirect(url_for('myBooks'))
-    
-    if request.method == 'POST':
+    if request.method =='POST':
         data = request.form.to_dict()
-        username = data.get('Username')
-        password = data.get('password')
-        
-        if not username or not password:
-            return render_template("user-register.html", error="Username and password are required")
-        
-        try:
-            response = requests.get(f'http://localhost:5000/API/Users')
-            if response.status_code == 200:
-                users = response.json()
-                user = next((u for u in users if u['UserName'] == username), None)
-                
-                if user:
-                    return render_template("user-login.html", error="User already registered, please login!")
-                else:
-                    new_user_data = {
-                        'UserName': username,
-                        'Password': password,
-                        'Role': 'user'
-                    }
-                    post_response = requests.post(f'http://localhost:5000/API/Users', json=new_user_data)
-                    
-                    if post_response.status_code == 201:
-                        return redirect(url_for('userLogin'))
-                    else:
-                        return render_template("user-register.html", error="Failed to register user")
-            else:
-                return render_template("user-register.html", error="Error fetching user data")
-        
-        except Exception as e:
-            return render_template("user-register.html", error="Error registering user")
-    
+        user = User.query.filter_by(UserName=data['Username']).first()
+        if user:
+            return render_template("user-login.html", error="User already registered please login!")
+        else:
+            user = User(UserName=data['Username'], Password=data['password'], Role='user')
+            db.session.add(user)
+            db.session.commit()
+            return redirect(url_for('userLogin'))
     else:
         return render_template("user-register.html")
-    
-# @app.route("/register", methods = ["GET","POST"])
-# def userRegister():
-#     if 'user_id' in session:
-#         return redirect(url_for('myBooks'))
-#     if request.method =='POST':
-#         data = request.form.to_dict()
-#         user = User.query.filter_by(UserName=data['Username']).first()
-#         if user:
-#             return render_template("user-login.html", error="User already registered please login!")
-#         else:
-#             user = User(UserName=data['Username'], Password=data['password'], Role='user')
-#             db.session.add(user)
-#             db.session.commit()
-#             return redirect(url_for('userLogin'))
-#     else:
-#         return render_template("user-register.html")
 
 @app.route("/librarian-login", methods = ["GET","POST"])
 def librarianLogin():

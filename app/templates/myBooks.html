@@ -41,7 +41,52 @@
         <h3>Completed Books</h3>
         <div class="main-container">
           {% for book in expiredBooks %}
-          <div class="section-container" id="1">
+          <div class="section-container" id="book_{{book.id}}">
+            <div class="rating-container">
+              <!-- Rating System -->
+              <div class="rating">
+                <input
+                  type="radio"
+                  id="star5_{{book.id}}"
+                  name="rating_{{book.id}}"
+                  value="5"
+                  onclick="submitRating('{{book.id}}', this.value)"
+                />
+                <label for="star5_{{book.id}}" title="5 stars">☆</label>
+                <input
+                  type="radio"
+                  id="star4_{{book.id}}"
+                  name="rating_{{book.id}}"
+                  value="4"
+                  onclick="submitRating('{{book.id}}', this.value)"
+                />
+                <label for="star4_{{book.id}}" title="4 stars">☆</label>
+                <input
+                  type="radio"
+                  id="star3_{{book.id}}"
+                  name="rating_{{book.id}}"
+                  value="3"
+                  onclick="submitRating('{{book.id}}', this.value)"
+                />
+                <label for="star3_{{book.id}}" title="3 stars">☆</label>
+                <input
+                  type="radio"
+                  id="star2_{{book.id}}"
+                  name="rating_{{book.id}}"
+                  value="2"
+                  onclick="submitRating('{{book.id}}', this.value)"
+                />
+                <label for="star2_{{book.id}}" title="2 stars">☆</label>
+                <input
+                  type="radio"
+                  id="star1_{{book.id}}"
+                  name="rating_{{book.id}}"
+                  value="1"
+                  onclick="submitRating('{{book.id}}', this.value)"
+                />
+                <label for="star1_{{book.id}}" title="1 star">☆</label>
+              </div>
+            </div>
             <h2>Book Name : {{book.Book_Title}}</h2>
             <p>Request Date : {{book.RequestDate}}</p>
             <p>Book Author : {{book.Author}}</p>
@@ -52,6 +97,79 @@
           </div>
           {% endfor %}
         </div>
+        <style>
+  .main-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .section-container {
+    position: relative;
+    width: 300px;
+    padding: 20px;
+    margin: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  .rating-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+  .rating {
+    display: flex; /* Ensure stars display horizontally */
+    justify-content: flex-end; /* Align stars to the right within .rating */
+    direction: rtl; /* Reverse direction for RTL language support */
+    unicode-bidi: bidi-override;
+  }
+  .rating input {
+    display: none;
+  }
+  .rating label {
+    font-size: 1.5rem;
+    color: #ddd;
+    cursor: pointer;
+  }
+  .rating input:checked ~ label {
+    color: gold;
+  }
+  .rating label:hover,
+  .rating label:hover ~ label {
+    color: gold;
+  }
+</style>
+
+        <script>
+          function submitRating(bookId, ratingValue) {
+            console.log(`Submitting rating ${ratingValue} for book ${bookId}`);
+
+            // Simulate form submission
+            // Replace with actual form submission logic
+            // Example using fetch API
+            fetch("/submit_rating", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ bookId: bookId, rating: ratingValue }),
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error("Network response was not ok");
+                }
+                return response.json();
+              })
+              .then((data) => {
+                console.log("Submission successful:", data);
+                // Optionally update UI to reflect successful submission
+              })
+              .catch((error) => {
+                console.error("Error submitting rating:", error);
+                // Handle error scenario
+              });
+          }
+        </script>
+
         <h3>Requested Books</h3>
         <div class="main-container">
           {% for book in issueBooks %}

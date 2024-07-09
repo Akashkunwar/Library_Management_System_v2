@@ -2,27 +2,48 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="/static/login.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Librarian Login</title>
+    <link rel="stylesheet" href="/static/login.css" />
   </head>
   <body>
-    <img src="/static/logo.jpg" alt="Logo" />
-    <form class="container" action="/librarian-login" method="post">
-      <p class="error-message">{{error}}</p>
-      <h2>Librarian Login</h2>
-      <div class="username">
-        <p>Username</p>
-        <input name="username" type="text" placeholder="Username" />
-      </div>
-      <div>
-        <p>Password</p>
-        <input name="password" type="password" placeholder="password" />
-      </div>
-      <button type="submit">Login</button>
-    </form>
-    <a href="/">
-      <button id="back" class="back">Back</button>
-    </a>
+    <div id="app"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+      Vue.component("librarian-login", {
+        data() {
+          return {
+            error: "",
+          };
+        },
+        template: `
+        <div>
+          <img src="/static/logo.jpg" alt="Logo">
+          <form class="container" action="/librarian-login" method="post">
+            <p class="error-message">{{ error }}</p>
+            <h2>Librarian Login</h2>
+            <div class="username">
+              <p>Username</p>
+              <input name="username" type="text" placeholder="Username">
+            </div>
+            <div>
+              <p>Password</p>
+              <input name="password" type="password" placeholder="Password">
+            </div>
+            <button type="submit">Login</button>
+          </form>
+          <a href="/">
+            <button id="back" class="back">Back</button>
+          </a>
+        </div>
+      `,
+      });
+
+      new Vue({
+        el: "#app",
+        template: "<librarian-login/>",
+      });
+    </script>
   </body>
 </html>
