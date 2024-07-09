@@ -4,7 +4,7 @@ from app.models import User, Section, Books, BookIssue, BookIssueMerge, BookSect
 import seaborn as sns
 import os
 import datetime
-from sqlalchemy import func, and_, or_
+from sqlalchemy import func, and_
 import matplotlib.pyplot as plt
 
 
@@ -217,21 +217,13 @@ def allBooks():
         return redirect(url_for('userLogin'))
     if request.method == 'POST':
         data = request.form.to_dict()
-        count_query = db.session.query(func.count()).filter(and_(BookIssue.UserId == session['user_id'],or_(BookIssue.IssueStatus == 'requested',BookIssue.IssueStatus == 'Approved'))).scalar()
-        print(count_query)
-        if count_query<5:
-            requstBook = BookIssue(UserId=session['user_id'], BookId=data['bookid'], SectionId=data['sectionId'], Days=data['days'], IssueStatus = 'requested', IssueDate = datetime.datetime.today().date())
-            db.session.add(requstBook)
-            db.session.commit()
+        requstBook = BookIssue(UserId=session['user_id'], BookId=data['bookid'], SectionId=data['sectionId'], Days=data['days'], IssueStatus = 'requested', IssueDate = datetime.datetime.today().date())
+        db.session.add(requstBook)
+        db.session.commit()
 
-            bookSec = BookSection.query.all()
-            userid = session['user_id']
-            return render_template("allBooks.html", books=bookSec, userid = userid)
-        else:
-            bookSec = BookSection.query.all()
-            userid = request.args.get('userid')
-            return render_template("allBooks.html", books=bookSec, userid = userid, message = "You have already requested maximum limit 5 books. Please return book or wait for approval")
-
+        bookSec = BookSection.query.all()
+        userid = session['user_id']
+        return render_template("allBooks.html", books=bookSec, userid = userid)
     else:
         bookSec = BookSection.query.all()
         userid = request.args.get('userid')
