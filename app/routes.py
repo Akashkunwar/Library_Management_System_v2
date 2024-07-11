@@ -4,7 +4,7 @@ from app.models import User, Section, Books, BookIssue, BookIssueMerge, BookSect
 import seaborn as sns
 import os
 import datetime
-from sqlalchemy import func, and_, or_
+from sqlalchemy import func, and_, or_, desc
 import matplotlib.pyplot as plt
 
 
@@ -13,37 +13,41 @@ def home():
     session.clear()
     return render_template("start.html")
 
-@app.route("/profile", methods = ["GET", "POST"])
+@app.route("/profile", methods=["GET", "POST"])
 def profile():
-    if ('admin_id' or 'user_id') not in session:
+    if 'admin_id' not in session and 'user_id' not in session:
         return redirect(url_for('home'))
-    if request.method=='POST':
+
+    if 'admin_id' in session:
+        id = session['admin_id']
+    elif 'user_id' in session:
+        id = session['user_id']
+    else:
+        id = None
+
+    user = User.query.get(id)
+    if not user:
+        return redirect(url_for('home'))
+
+    if request.method == 'POST':
         data = request.form.to_dict()
         print(session)
         print(data)
-        if 'admin_id' in session:
-            id = session['admin_id']
-        if 'user_id' in session:
-            id = session['user_id']
         print(id)
-        user = User.query.get(id)
-        print('user : ',user)
-        user.Name = data['inputFirstName']+' '+data['inputLastName']
-        user.Email = data['inputEmail']
-        user.Department = data['inputDepartment']
-        user.Description = data['inputAbout']
-        user.Phone_No = data['inputPhone']
-        user.DOB = data['inputDate']
-        user.Gender = data['inputGender']
-        user.Education = data['inputEducation']
-        user.Job = data['inputJob']
-        user.City = data['inputCity']
-        user.Linkedin = data['inputLinkedIn']
-        user.Favourate_Books = data['inputFabourateBooks']
+        print('user : ', user)
+        for key, value in data.items():
+            if value:
+                if key == 'inputFirstName' or key == 'inputLastName':
+                    continue 
+                attr_name = key.replace('input', '')
+                setattr(user, attr_name, value)
+
+        user.Name = data['inputFirstName'] + ' ' + data['inputLastName']
+
         db.session.commit()
-        return render_template('profile.html')
-    else:
-        return render_template('profile.html')
+
+    return render_template('profile.html', user=user)
+
     
 @app.route("/user-login", methods = ["GET","POST"])
 def userLogin():
@@ -213,9 +217,25 @@ def updateBooks(BooksId):
     
 @app.route("/submit_rating", methods=["POST"])
 def submit_rating():
+    if 'admin_id' not in session and 'user_id' not in session:
+        return redirect(url_for('home'))
+
+    if 'admin_id' in session:
+        id = session['admin_id']
+    elif 'user_id' in session:
+        id = session['user_id']
+    else:
+        id = None
+
+
     if request.method == 'POST':
-        data = request.json
+        book_issue = BookIssue.query.filter(BookIssue.UserId == id, BookIssue.IssueStatus == "Expired").order_by(desc(BookIssue.IssueDate)).first()
+        data = request.form.to_dict()
         print(data)
+
+        book_issue.Rating = data['rating']
+        db.session.commit()
+        return redirect(url_for('myBooks'))
 
 
 @app.route("/allBooks", methods=["GET","POST"])
