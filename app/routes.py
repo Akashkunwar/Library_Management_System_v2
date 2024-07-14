@@ -1,19 +1,34 @@
 from app import app, db
-from flask import render_template, request, redirect, url_for, send_file, session, jsonify
+from flask import render_template, request, redirect, url_for, send_file, session, Flask
 from app.models import User, Section, Books, BookIssue, BookIssueMerge, BookSection
 import seaborn as sns
 import os
 import datetime
 from sqlalchemy import func, and_, or_, desc
 import matplotlib.pyplot as plt
+from flask_caching import Cache
+# import time
 
 
-@app.route("/", methods = ["GET","POST"])
+config = {
+    "DEBUG": True,
+    "CACHE_TYPE": "SimpleCache", 
+    "CACHE_DEFAULT_TIMEOUT": 300,
+    "CACHE_KEY_PREFIX": 'mycache'
+}
+
+app.config.from_mapping(config)
+cache = Cache(app)
+
+@app.route("/", methods=["GET", "POST"])
+@cache.cached(timeout=600)
 def home():
+    # time.sleep(5)
     session.clear()
     return render_template("start.html")
 
 @app.route("/profile", methods=["GET", "POST"])
+# @cache.cached(timeout=600)
 def profile():
     if 'admin_id' not in session and 'user_id' not in session:
         return redirect(url_for('home'))
@@ -50,6 +65,7 @@ def profile():
 
     
 @app.route("/user-login", methods = ["GET","POST"])
+# @cache.cached(timeout=600)
 def userLogin():
     if 'user_id' in session:
         return redirect(url_for('allBooks', userid=session['user_id']))
@@ -71,6 +87,7 @@ def userLogin():
         return render_template("user-login.html")
 
 @app.route("/logout", methods = ["GET", "POST"])
+# @cache.cached(timeout=600)
 def logout():
     if 'user_id' in session:
         session.pop('user_id', None)
@@ -82,6 +99,7 @@ def logout():
         return redirect(url_for('home'))
 
 @app.route("/register", methods = ["GET","POST"])
+# @cache.cached(timeout=600)
 def userRegister():
     if 'user_id' in session:
         return redirect(url_for('myBooks'))
@@ -99,6 +117,7 @@ def userRegister():
         return render_template("user-register.html")
 
 @app.route("/librarian-login", methods = ["GET","POST"])
+# @cache.cached(timeout=600)
 def librarianLogin():
     if 'admin_id' in session:
         return redirect(url_for('requestedBooks'))
@@ -120,6 +139,7 @@ def librarianLogin():
         return render_template("librarian-login.html")
 
 @app.route("/add-section", methods = ["GET","POST"])
+# @cache.cached(timeout=600)
 def addSection():
     if 'admin_id' not in session:
         return redirect(url_for('librarianLogin'))
@@ -135,6 +155,7 @@ def addSection():
         return render_template("add-section.html", section = section)
 
 @app.route("/updateSections/<int:SectionId>", methods=["GET", "POST"])
+# @cache.cached(timeout=600)
 def updateSections(SectionId):
     section = Section.query.get(SectionId)
     if not section:
@@ -155,6 +176,7 @@ def updateSections(SectionId):
         return render_template("add-section.html", section=section)
     
 @app.route("/showBooks", methods = ["GET","POST"])
+# @cache.cached(timeout=600)
 def showBooks():
     if 'admin_id' not in session:
         return redirect(url_for('librarianLogin'))
@@ -178,6 +200,7 @@ def showBooks():
         return render_template("showBooks.html", books=bookSec)
 
 @app.route("/deleteBook/<int:bookId>", methods=["GET", "POST"])
+# @cache.cached(timeout=600)
 def deleteBook(bookId):
     book = Books.query.get(bookId)
     if book:
@@ -189,6 +212,7 @@ def deleteBook(bookId):
     return redirect(url_for('showBooks'))
 
 @app.route("/deleteSecion/<int:sectionId>", methods=["GET", "POST"])
+# @cache.cached(timeout=600)
 def deleteSection(sectionId):
     section = Section.query.get(sectionId)
     if section:
@@ -197,6 +221,7 @@ def deleteSection(sectionId):
     return redirect(url_for('addSection'))
 
 @app.route("/updateBooks/<int:BooksId>", methods=["GET", "POST"])
+# @cache.cached(timeout=600)
 def updateBooks(BooksId):
     book = Books.query.get(BooksId)
     if not book:
@@ -216,6 +241,7 @@ def updateBooks(BooksId):
         return render_template("showBooks.html", books=books)
     
 @app.route("/submit_rating", methods=["POST"])
+# @cache.cached(timeout=600)
 def submit_rating():
     if 'admin_id' not in session and 'user_id' not in session:
         return redirect(url_for('home'))
@@ -239,6 +265,7 @@ def submit_rating():
 
 
 @app.route("/allBooks", methods=["GET","POST"])
+# @cache.cached(timeout=600)
 def allBooks():
     if 'user_id' not in session:
         return redirect(url_for('userLogin'))
@@ -265,6 +292,7 @@ def allBooks():
         return render_template("allBooks.html", books=bookSec, userid = userid)
 
 @app.route("/myBooks", methods=["GET","POST"])
+# @cache.cached(timeout=600)
 def myBooks():
     if 'user_id' not in session:
         return redirect(url_for('userLogin'))
@@ -315,6 +343,7 @@ def myBooks():
     expiredBooks = ExpiredBookIssueMergeTable)
 
 @app.route("/requestedBooks", methods=["GET","POST"])
+# @cache.cached(timeout=600)
 def requestedBooks():
     if 'admin_id' not in session:
         return redirect(url_for('librarianLogin'))
@@ -354,6 +383,7 @@ def requestedBooks():
     return render_template("requestBooks.html", books=BookIssueMergeTable, approvedBooks = ApprovedBookIssueMergeTable, rejectedBooks = RejectedBookIssueMergeTable)
 
 @app.route("/adminStats", methods=["GET","POST"])
+@cache.cached(timeout=60)
 def adminStats():
     if 'admin_id' not in session:
         return redirect(url_for('librarianLogin'))
@@ -416,6 +446,7 @@ def adminStats():
     return render_template("adminStats.html", header = "headerAdmin.html", Graph1 = "Admin & User Count Pie chart", Graph2 = "Admin & User Count Bar", Graph3 = "Books Request Status", Graph4 = "Section-wise Book Count")
 
 @app.route("/userStats", methods=["GET","POST"])
+@cache.cached(timeout=60)
 def userStats():
     if 'user_id' not in session:
         return redirect(url_for('userLogin'))
@@ -477,6 +508,7 @@ def userStats():
     return render_template("adminStats.html", header = "header.html", Graph1 = "My request Status Pie", Graph2 = "My request Status Bar", Graph3 = "Books & Section Counts", Graph4 = "Section-wise Book Count")
 
 @app.route('/download-book/<path:filename>')
+# @cache.cached(timeout=600)
 def download_book(filename):
     pdf_path = os.path.join("books", filename)
     return send_file(pdf_path, as_attachment=True)
