@@ -81,4 +81,5 @@ class BookSection(db.Model):
     Books_Title = db.Column(db.String(50), nullable=False)
     Books_Author = db.Column(db.String(50), nullable=False)
     Books_Content = db.Column(db.Text)
+    Books_Rating = db.Column(db.Text)
     Books_ImageLink = db.Column(db.String(255))

@@ -139,7 +139,6 @@ def librarianLogin():
         return render_template("librarian-login.html")
 
 @app.route("/add-section", methods = ["GET","POST"])
-# @cache.cached(timeout=600)
 def addSection():
     if 'admin_id' not in session:
         return redirect(url_for('librarianLogin'))
@@ -239,9 +238,8 @@ def updateBooks(BooksId):
     else:
         books = Books.query.all()
         return render_template("showBooks.html", books=books)
-    
+
 @app.route("/submit_rating", methods=["POST"])
-# @cache.cached(timeout=600)
 def submit_rating():
     if 'admin_id' not in session and 'user_id' not in session:
         return redirect(url_for('home'))
@@ -253,14 +251,18 @@ def submit_rating():
     else:
         id = None
 
-
+    print(id)
     if request.method == 'POST':
-        book_issue = BookIssue.query.filter(BookIssue.UserId == id, BookIssue.IssueStatus == "Expired").order_by(desc(BookIssue.IssueDate)).first()
         data = request.form.to_dict()
+        book_id = data['bookId']
+        rating = data['rating']
         print(data)
 
-        book_issue.Rating = data['rating']
-        db.session.commit()
+        book_issue = BookIssue.query.filter_by(UserId=id, BookId=book_id, IssueStatus="Expired").first()
+
+        if book_issue:
+            book_issue.Rating = rating
+            db.session.commit()
         return redirect(url_for('myBooks'))
 
 

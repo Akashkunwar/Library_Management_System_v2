@@ -19,6 +19,9 @@
             <div>
               <p class="book-section">Book Section : {{book.Section_Title}}</p>
             </div>
+            <div>
+              <p class="book-rating">Book Rating : {{book.Books_Rating}} ⭐</p>
+            </div>
             <form action="/allBooks" method="post">
               <input type="hidden" name="userid" value="{{userid}}" />
               <input

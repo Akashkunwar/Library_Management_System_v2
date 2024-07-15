@@ -8,15 +8,21 @@
     {% include 'bootstrap.html' %}
   </head>
   <body>
-    <div>
+    <div id="app">
       {% include 'headerAdmin.html' %}
       <div>
-        <button type="button" id="addSection" class="btn btn-outline-primary">
+        <button
+          type="button"
+          id="addSection"
+          class="btn btn-outline-primary"
+          @click="showAddSectionPopup = true"
+        >
           + Add<br />Section
         </button>
         <form
+          v-if="showAddSectionPopup"
           id="addSectionPopup"
-          class="popup"
+          class="popup show"
           action="/add-section"
           method="post"
         >
@@ -33,8 +39,8 @@
             </div>
             <div>
               <h4>Creation Date :</h4>
-              <input type="hidden" name="date" required />
-              <p id="current-date">Creation date</p>
+              <input type="hidden" name="date" :value="currentDate" required />
+              <p id="current-date">{{ currentDate }}</p>
             </div>
             <div>
               <h4>Description</h4>
@@ -50,12 +56,17 @@
               <button class="btn btn-outline-primary" type="submit">
                 save
               </button>
-              <button class="btn btn-primary" id="closePopup">Close</button>
+              <button
+                class="btn btn-primary"
+                @click.prevent="showAddSectionPopup = false"
+              >
+                Close
+              </button>
             </div>
           </div>
         </form>
         <div class="main-container">
-          {% for sec in section %}
+          {% if section %} {% for sec in section %}
           <div class="section-container" id="{{ sec.SectionId }}">
             <h2>{{ sec.Title }}</h2>
             <p>Date Created: {{ sec.CreatedDate }}</p>
@@ -67,6 +78,7 @@
               type="button"
               id="addBook{{ sec.SectionId }}"
               class="btn btn-primary"
+              @click="toggleAddBookPopup('{{ sec.SectionId }}')"
             >
               + Books
             </button>
@@ -74,6 +86,7 @@
               type="button"
               id="editSection{{sec.SectionId}}"
               class="btn btn-outline-secondary"
+              @click="toggleEditSectionPopup('{{ sec.SectionId }}')"
             >
               Edit
             </button>
@@ -87,103 +100,253 @@
               </button>
             </form>
           </div>
-          {% include 'editSectionPopup.html' %} {% include 'addBookPopup.html'
-          %}{% endfor %}
+
+          <!-- Include the addBookPopup form -->
+          <form
+            v-if="showAddBookPopup['{{ sec.SectionId }}']"
+            id="addBookPopup{{ sec.SectionId }}"
+            class="popup show"
+            action="/showBooks"
+            method="POST"
+            enctype="multipart/form-data"
+          >
+            <div class="popup-content">
+              <h1>Add Books</h1>
+              <div>
+                <h4>Book Title :</h4>
+                <input
+                  type="text"
+                  name="Book-Title"
+                  placeholder="Book Name"
+                  required
+                />
+              </div>
+              <div>
+                <h4>Author :</h4>
+                <input
+                  type="text"
+                  name="Author"
+                  placeholder="Author Name"
+                  required
+                />
+              </div>
+              <div>
+                <h4>Content :</h4>
+                <input
+                  type="text"
+                  name="Content"
+                  placeholder="About this book"
+                />
+              </div>
+              <div>
+                <h4>Book Section :</h4>
+                <input
+                  type="hidden"
+                  name="book_section"
+                  value="{{ sec.SectionId }}"
+                />
+                <p id="current-section">{{ sec.Title }}</p>
+                <h4>Add Book :</h4>
+                <input type="file" name="file" accept=".pdf" required />
+                <h4>Add Image :</h4>
+                <input
+                  type="file"
+                  name="bookCover"
+                  accept=".png, .jpeg, .jpg"
+                  required
+                />
+              </div>
+              <div class="buttons">
+                <button class="btn btn-outline-primary" type="submit">
+                  save
+                </button>
+                <button
+                  class="btn btn-primary"
+                  @click.prevent="toggleAddBookPopup('{{ sec.SectionId }}')"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <!-- Include the editBooksPopup form -->
+          <form
+            v-if="showEditSectionPopup['{{ sec.SectionId }}']"
+            id="editSectionsPopup{{ sec.SectionId }}"
+            class="popup show"
+            action="/edit-section"
+            method="post"
+          >
+            <div class="popup-content">
+              <h1>Edit Section</h1>
+              <div>
+                <h4>Section</h4>
+                <input
+                  type="text"
+                  name="section"
+                  placeholder="Section Name"
+                  value="{{ sec.Title }}"
+                  required
+                />
+              </div>
+              <div>
+                <h4>Description</h4>
+                <textarea
+                  name="description"
+                  cols="50"
+                  rows="4"
+                  placeholder="Description"
+                >
+{{ sec.Description }}</textarea
+                >
+              </div>
+              <div class="buttons">
+                <button class="btn btn-outline-primary" type="submit">
+                  save
+                </button>
+                <button
+                  class="btn btn-primary"
+                  @click.prevent="toggleEditSectionPopup('{{ sec.SectionId }}')"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </form>
+
+          {% endfor %} {% else %}
+          <p>No sections available.</p>
+          {% endif %}
         </div>
       </div>
       {% include 'footer.html' %}
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script>
-      // Show the add section popup
-      document
-        .getElementById("addSection")
-        .addEventListener("click", function () {
-          document.getElementById("addSectionPopup").classList.add("show");
-        });
-
-      // Close the add section popup
-      document
-        .getElementById("closePopup")
-        .addEventListener("click", function () {
-          document.getElementById("addSectionPopup").classList.remove("show");
-        });
-
-      // Close the add section popup when clicking outside of it
-      window.addEventListener("click", function (event) {
-        if (event.target == document.getElementById("addSectionPopup")) {
-          document.getElementById("addSectionPopup").classList.remove("show");
-        }
+      new Vue({
+        el: "#app",
+        data: {
+          showAddSectionPopup: false,
+          showEditSectionPopup: {},
+          showAddBookPopup: {},
+          currentDate: "",
+        },
+        created() {
+          const d = new Date();
+          const options = { day: "2-digit", month: "2-digit", year: "numeric" };
+          this.currentDate = d.toLocaleDateString("en-GB", options);
+        },
+        methods: {
+          toggleAddBookPopup(sectionId) {
+            this.$set(
+              this.showAddBookPopup,
+              sectionId,
+              !this.showAddBookPopup[sectionId]
+            );
+          },
+          toggleEditSectionPopup(sectionId) {
+            this.$set(
+              this.showEditSectionPopup,
+              sectionId,
+              !this.showEditSectionPopup[sectionId]
+            );
+          },
+        },
       });
-
-      // Set the current date in the add section form
-      const hiddenDateInput = document.querySelector('input[name="date"]');
-      const currentDate = document.getElementById("current-date");
-      const d = new Date();
-      const options = {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      };
-      const formattedDate = d.toLocaleDateString("en-GB", options);
-      currentDate.textContent = formattedDate;
-      hiddenDateInput.value = formattedDate;
-
-      // Handle clicks in the main container
-      document
-        .querySelector(".main-container")
-        .addEventListener("click", function (event) {
-          if (
-            event.target.closest(".section-container") &&
-            !event.target.matches('[id^="addBook"]') &&
-            !event.target.matches('[id^="editSection"]')
-          ) {
-            window.location.href = "/showBooks";
-          }
-
-          if (event.target.matches('[id^="addBook"]')) {
-            const sectionId = event.target.id.replace("addBook", "");
-            const popupId = `addBookPopup${sectionId}`;
-            const addBookPopup = document.getElementById(popupId);
-            if (addBookPopup) {
-              addBookPopup.classList.toggle("show");
-            }
-          }
-
-          if (event.target.matches('[id^="editSection"]')) {
-            const sectionId = event.target.id.replace("editSection", "");
-            const popupId = `editSectionsPopup${sectionId}`;
-            const editSectionPopup = document.getElementById(popupId);
-            if (editSectionPopup) {
-              editSectionPopup.classList.toggle("show");
-            }
-          }
-        });
-
-      // Close add book popups
-      document
-        .querySelectorAll('[id^="closeBookPopup"]')
-        .forEach(function (closeButton) {
-          closeButton.addEventListener("click", function (event) {
-            event.preventDefault(); // Prevent form submission
-            const addBookPopup = closeButton.closest(".popup");
-            if (addBookPopup) {
-              addBookPopup.classList.remove("show");
-            }
-          });
-        });
-
-      // Close edit section popups
-      document
-        .querySelectorAll('[id^="closeEditSectionPopup"]')
-        .forEach(function (closeButton) {
-          closeButton.addEventListener("click", function (event) {
-            event.preventDefault(); // Prevent form submission
-            const editSectionPopup = closeButton.closest(".popup");
-            if (editSectionPopup) {
-              editSectionPopup.classList.remove("show");
-            }
-          });
-        });
     </script>
   </body>
 </html>
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add-Section</title>
+    <link rel="stylesheet" href="/static/add-section.css" />
+    {% include 'bootstrap.html' %}
+  </head>
+  <body>
+    <div id="app">
+      {% include 'headerAdmin.html' %}
+      <div>
+        <button type="button" id="addSection" class="btn btn-outline-primary" @click="showAddSectionPopup = true">
+          + Add<br />Section
+        </button>
+        <form v-if="showAddSectionPopup" id="addSectionPopup" class="popup" action="/add-section" method="post">
+          <div class="popup-content">
+            <h1>Add Section</h1>
+            <div>
+              <h4>Section</h4>
+              <input type="text" name="section" placeholder="Section Name" required />
+            </div>
+            <div>
+              <h4>Creation Date :</h4>
+              <input type="hidden" name="date" :value="currentDate" required />
+              <p id="current-date">{{ currentDate }}</p>
+            </div>
+            <div>
+              <h4>Description</h4>
+              <textarea name="text" id="Description" cols="50" rows="4" placeholder="Description"></textarea>
+            </div>
+            <div class="buttons">
+              <button class="btn btn-outline-primary" type="submit">save</button>
+              <button class="btn btn-primary" @click.prevent="showAddSectionPopup = false">Close</button>
+            </div>
+          </div>
+        </form>
+        <div class="main-container">
+          {% if section %}
+            {% for sec in section %}
+            <div class="section-container" id="{{ sec.SectionId }}">
+              <h2>{{ sec.Title }}</h2>
+              <p>Date Created: {{ sec.CreatedDate }}</p>
+              <div>
+                <p>Description</p>
+                <p>{{ sec.Description }}</p>
+              </div>
+              <button type="button" id="addBook{{ sec.SectionId }}" class="btn btn-primary" @click="toggleAddBookPopup('{{ sec.SectionId }}')">+ Books</button>
+              <button type="button" id="editSection{{sec.SectionId}}" class="btn btn-outline-secondary" @click="toggleEditSectionPopup('{{ sec.SectionId }}')">Edit</button>
+              <form action="{{ url_for('deleteSection', sectionId=sec.SectionId) }}" method="post" style="display: inline">
+                <button type="submit" class="btn btn-outline-danger">Delete</button>
+              </form>
+            </div>
+            {% include 'editSectionPopup.html' %} {% include 'addBookPopup.html' %}
+            {% endfor %}
+          {% else %}
+            <p>No sections available.</p>
+          {% endif %}
+        </div>
+      </div>
+      {% include 'footer.html' %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+      new Vue({
+        el: '#app',
+        data: {
+          showAddSectionPopup: false,
+          showEditSectionPopup: {},
+          showAddBookPopup: {},
+          currentDate: ''
+        },
+        created() {
+          const d = new Date();
+          const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+          this.currentDate = d.toLocaleDateString('en-GB', options);
+        },
+        methods: {
+          toggleAddBookPopup(sectionId) {
+            this.$set(this.showAddBookPopup, sectionId, !this.showAddBookPopup[sectionId]);
+          },
+          toggleEditSectionPopup(sectionId) {
+            this.$set(this.showEditSectionPopup, sectionId, !this.showEditSectionPopup[sectionId]);
+          }
+        }
+      });
+    </script>
+  </body>
+</html> -->

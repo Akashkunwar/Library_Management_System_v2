@@ -103,48 +103,6 @@
           </div>
           {% endfor %}
         </div>
-        <style>
-          .main-container {
-            display: flex;
-            flex-wrap: wrap;
-          }
-          .section-container {
-            position: relative;
-            width: 300px;
-            padding: 20px;
-            margin: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-          }
-          .rating-container {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-          }
-          .rating {
-            display: flex;
-            justify-content: flex-end;
-            direction: rtl;
-            unicode-bidi: bidi-override;
-          }
-          .rating input {
-            display: none;
-          }
-          .rating label {
-            font-size: 2.5rem;
-            color: #555454;
-            cursor: pointer;
-          }
-          .rating input:checked ~ label {
-            color: gold;
-          }
-          .rating label:hover,
-          .rating label:hover ~ label {
-            color: gold;
-          }
-        </style>
-
         <script>
           function submitRating(bookId, ratingValue) {
             console.log(`Submitting rating ${ratingValue} for book ${bookId}`);
