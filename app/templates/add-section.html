@@ -170,12 +170,11 @@
             </div>
           </form>
 
-          <!-- Include the editBooksPopup form -->
           <form
             v-if="showEditSectionPopup['{{ sec.SectionId }}']"
             id="editSectionsPopup{{ sec.SectionId }}"
             class="popup show"
-            action="/edit-section"
+            action="/updateSections/{{ sec.SectionId }}"
             method="post"
           >
             <div class="popup-content">

@@ -163,9 +163,8 @@ def updateSections(SectionId):
     if request.method == 'POST':
         data = request.form.to_dict()
         print(data)
-        section.Title = data['Title']
-        # section.Author = data['Author']
-        section.Description = data['Description']
+        section.Title = data['section']
+        section.Description = data['description']
 
         db.session.commit()
 
@@ -186,10 +185,10 @@ def showBooks():
         file_path = os.path.join("app/books", new_filename)
         f.save(file_path)
         c = request.files['bookCover']
-        new_filename = (data['Book-Title']+"_"+data['Author']+".png").replace(" ","_")
-        file_path_image = os.path.join("app/bookCover", new_filename)
+        new_CoverImage_filename = (data['Book-Title']+"_"+data['Author']+".png").replace(" ","_")
+        file_path_image = os.path.join("app/bookCover", new_CoverImage_filename)
         c.save(file_path_image) 
-        books = Books(SectionId = data['book_section'],Title=data['Book-Title'],Author=data['Author'],Content=data['Content'], ImageLink=new_filename)
+        books = Books(SectionId = data['book_section'],Title=data['Book-Title'],Author=data['Author'],Content=data['Content'], ImageLink=new_filename, BookCoverLink=new_CoverImage_filename)
         db.session.add(books)
         db.session.commit()
         bookSec = BookSection.query.all()
@@ -211,11 +210,15 @@ def deleteBook(bookId):
     return redirect(url_for('showBooks'))
 
 @app.route("/deleteSecion/<int:sectionId>", methods=["GET", "POST"])
-# @cache.cached(timeout=600)
 def deleteSection(sectionId):
     section = Section.query.get(sectionId)
     if section:
         db.session.delete(section)
+        db.session.commit()
+
+        books_to_delete = Books.query.filter_by(SectionId=sectionId).all()
+        for book in books_to_delete:
+            db.session.delete(book)
         db.session.commit()
     return redirect(url_for('addSection'))
 

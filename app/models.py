@@ -38,6 +38,7 @@ class Books(db.Model):
     Author = db.Column(db.String(50), nullable=False)
     Content = db.Column(db.Text)
     ImageLink = db.Column(db.String(255))
+    BookCoverLink = db.Column(db.String(255))
 
 class BookIssue(db.Model):
     __tablename__ = 'BookIssue'
