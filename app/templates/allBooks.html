@@ -3,6 +3,292 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>All Books</title>
+    <link rel="stylesheet" href="/static/add-section.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div id="app">
+      <header class="p-3 mb-1 border-bottom">
+        <div class="container">
+          <div
+            class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
+          >
+            <a
+              href="/"
+              class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none"
+            >
+              <svg
+                class="bi me-2"
+                width="40"
+                height="32"
+                role="img"
+                aria-label="Bootstrap"
+              >
+                <use xlink:href="#bootstrap" />
+              </svg>
+            </a>
+
+            <ul
+              class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"
+            >
+              <li>
+                <a href="/myBooks" class="nav-link px-2 link-secondary"
+                  >My Books</a
+                >
+              </li>
+              <li>
+                <a href="/allBooks" class="nav-link px-2 link-body-emphasis"
+                  >All Books</a
+                >
+              </li>
+              <li>
+                <a href="/userStats" class="nav-link px-2 link-body-emphasis"
+                  >Statistics</a
+                >
+              </li>
+            </ul>
+
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+              <input
+                type="search"
+                class="form-control"
+                placeholder="Search..."
+                aria-label="Search"
+                v-model="searchQuery"
+              />
+            </form>
+            <div class="userId" style="margin: 10px; display: none">
+              {{ userId }}
+            </div>
+            <a href="/profile">
+              <img
+                src="/static/logo.jpg"
+                alt="mdo"
+                width="32"
+                height="32"
+                class="rounded-circle"
+              />
+            </a>
+            <ul class="nav" style="margin-left: 40px">
+              <li>
+                <a href="/logout" class="nav-link px-2 link-secondary"
+                  >Log Out</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </header>
+
+      <div>
+        <div class="main-container">
+          <div
+            v-for="book in filteredBooks"
+            :key="book.Books_BookId"
+            class="section-container"
+            id="1"
+          >
+            <h2>{{ book.Books_Title }}</h2>
+            <p class="book-author">Book Author : {{ book.Books_Author }}</p>
+            <div>
+              <p class="book-section">
+                Book Section : {{ book.Section_Title }}
+              </p>
+            </div>
+            <div>
+              <p class="book-rating">
+                Book Rating : {{ book.Books_Rating }} ⭐
+              </p>
+            </div>
+            <form
+              @submit.prevent="requestBook(book.Books_BookId, book.Section_SectionId)"
+            >
+              <p>
+                Request Days
+                <input
+                  type="number"
+                  v-model="requestDays"
+                  required
+                  style="width: 50px; padding: 4px; margin-right: 10px"
+                />
+              </p>
+              <button
+                type="submit"
+                :id="'request' + book.Books_BookId"
+                class="btn btn-outline-secondary"
+              >
+                Request
+              </button>
+            </form>
+
+            <form
+              :id="'editBooksPopup' + book.Books_BookId"
+              class="popup"
+              :action="'/updateBooks/' + book.Books_BookId"
+              method="post"
+            >
+              <div class="popup-content">
+                <h1>Edit Books</h1>
+                <div>
+                  <h4>Book Title :</h4>
+                  <input
+                    type="text"
+                    name="Title"
+                    :placeholder="book.Books_Title"
+                    required
+                  />
+                </div>
+                <div>
+                  <h4>Author :</h4>
+                  <input
+                    type="text"
+                    name="Author"
+                    :placeholder="book.Books_Author"
+                    required
+                  />
+                </div>
+                <div>
+                  <h4>Content :</h4>
+                  <input
+                    type="text"
+                    name="Content"
+                    placeholder="Link"
+                    required
+                  />
+                </div>
+                <div>
+                  <h4>Book Section :</h4>
+                  <p id="current-section">{{ book.Section_Title }}</p>
+                </div>
+                <div class="buttons">
+                  <button class="btn btn-outline-primary" type="submit">
+                    Save
+                  </button>
+                  <button
+                    class="btn btn-primary"
+                    type="button"
+                    @click="closePopup('editBooksPopup' + book.Books_BookId)"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </form>
+
+            <div :id="'showBooksPopup' + book.Books_BookId" class="popup">
+              <div class="popup-content">
+                <h1>History Book class 10</h1>
+                <div id="current-section">
+                  <h4>Book Title : {{ book.Books_Title }}</h4>
+                  <h4>Book Author : {{ book.Books_Author }}</h4>
+                  <h4>Book Section : {{ book.Section_Title }}</h4>
+                  <h4>
+                    Link :
+                    <a :href="downloadBookLink(book.Books_ImageLink)"
+                      >Show Book</a
+                    >
+                  </h4>
+                  <div class="buttons">
+                    <button
+                      class="btn btn-primary"
+                      type="button"
+                      @click="closePopup('showBooksPopup' + book.Books_BookId)"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container">
+          <p style="text-align: center; color: red">{{ message }}</p>
+          <footer class="py-3 my-4">
+            <p class="text-center text-body-secondary">&copy; 2024 BookStop</p>
+          </footer>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          books: [],
+          userId: "",
+          searchQuery: "",
+          requestDays: 7,
+          message: "",
+        },
+        computed: {
+          filteredBooks() {
+            return this.books.filter((book) =>
+              book.Books_Title.toLowerCase().includes(
+                this.searchQuery.toLowerCase()
+              )
+            );
+          },
+        },
+        methods: {
+          fetchBooks() {
+            fetch("/api/books")
+              .then((response) => response.json())
+              .then((data) => {
+                this.books = data.books;
+                this.userId = data.userId;
+              })
+              .catch((error) => {
+                console.error("Error fetching books:", error);
+              });
+          },
+          requestBook(bookId, sectionId) {
+            fetch("/allBooks", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                bookid: bookId,
+                sectionId: sectionId,
+                days: this.requestDays,
+              }),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                this.message = data.message;
+                this.fetchBooks(); // Refresh books list after request
+              })
+              .catch((error) => {
+                console.error("Error requesting book:", error);
+              });
+          },
+          closePopup(popupId) {
+            document.getElementById(popupId).style.display = "none";
+          },
+          downloadBookLink(imageLink) {
+            return "/static/" + imageLink;
+          },
+        },
+        mounted() {
+          this.fetchBooks();
+        },
+      });
+    </script>
+  </body>
+</html>
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Add-Section</title>
     <link rel="stylesheet" href="/static/add-section.css" />
     {% include 'bootstrap.html' %}
@@ -93,4 +379,4 @@
       });
     </script>
   </body>
-</html>
+</html> -->
