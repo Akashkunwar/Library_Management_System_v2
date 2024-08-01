@@ -1,5 +1,5 @@
 from app import app, db
-from flask import render_template, request, redirect, url_for, send_file, session, Flask, jsonify
+from flask import render_template, request, redirect, url_for, send_file, session, Flask
 from app.models import User, Section, Books, BookIssue, BookIssueMerge, BookSection
 import seaborn as sns
 import os
@@ -7,7 +7,7 @@ import datetime
 from sqlalchemy import func, and_, or_, desc
 import matplotlib.pyplot as plt
 from flask_caching import Cache
-import time
+# import time
 
 
 config = {
@@ -23,7 +23,7 @@ cache = Cache(app)
 @app.route("/", methods=["GET", "POST"])
 @cache.cached(timeout=600)
 def home():
-    time.sleep(5)
+    # time.sleep(5)
     session.clear()
     return render_template("start.html")
 
@@ -45,10 +45,6 @@ def profile():
 
     if request.method == 'POST':
         data = request.form.to_dict()
-        print(session)
-        print(data)
-        print(id)
-        print('user : ', user)
         for key, value in data.items():
             if value:
                 if key == 'inputFirstName' or key == 'inputLastName':
@@ -63,6 +59,35 @@ def profile():
     return render_template('profile.html', user=user)
 
     
+from .utils import send_pdf_to_users, pdfReport
+
+@app.route("/sendProfile", methods=["GET", "POST"])
+def sendProfile():
+
+    if 'admin_id' not in session and 'user_id' not in session:
+        return redirect(url_for('home'))
+
+    if 'admin_id' in session:
+        id = session['admin_id']
+    elif 'user_id' in session:
+        id = session['user_id']
+    else:
+        id = None
+
+    user = User.query.get(id)
+    if not user:
+        return redirect(url_for('home'))
+
+    if request.method == 'POST':
+        try:
+            pdfReport()
+            send_pdf_to_users("Mislinious/Books.pdf", user.Email, 'Books', 'Book Status')
+            send_pdf_to_users("Mislinious/Stats.pdf", user.Email, 'Stats', 'Status')
+        except:
+            pass
+        print(user.Email)
+    return render_template('profile.html', user=user)
+
 @app.route("/user-login", methods = ["GET","POST"])
 def userLogin():
     if 'user_id' in session:
@@ -285,7 +310,6 @@ def allBooks():
         bookSec = BookSection.query.all()
         userid = request.args.get('userid')
         return render_template("allBooks.html", books=bookSec, userid = userid)
-
 
 @app.route("/myBooks", methods=["GET","POST"])
 def myBooks():
