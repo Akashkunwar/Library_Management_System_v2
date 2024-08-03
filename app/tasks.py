@@ -6,6 +6,10 @@ from email.mime.base import MIMEBase
 from email import encoders
 import os
 import logging
+from .celery_config import celery
+from app.models import User
+from flask import url_for
+import pdfkit
 
 logging.basicConfig(level=logging.INFO)
 
@@ -40,3 +44,17 @@ def send_pdf_to_users(pdf_path, recipient_email, subject, body):
         logging.info("Task send_pdf_to_users completed")
     except Exception as e:
         logging.error(f"Error in send_pdf_to_users: {e}")
+
+@celery.task
+def pdfReport():
+    users = User.query.all()
+    for user in users:
+        user_id = user.id
+        email = user.email
+        stats_url = url_for('userStats', _external=True) + f"?user_id={user_id}"
+        try:
+            pdf_path = f'Mislinious/Stats_{user_id}.pdf'
+            pdfkit.from_url(stats_url, pdf_path)
+            send_pdf_to_users(pdf_path, email, 'Your Monthly Report', 'Here is your monthly report.')
+        except Exception as e:
+            logging.error(f"Error generating or sending PDF for user {user_id}: {e}")

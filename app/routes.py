@@ -1,14 +1,15 @@
 from app import app, db
-from flask import render_template, request, redirect, url_for, send_file, session, Flask
+from flask import render_template, request, redirect, url_for, send_file, session, Flask,make_response
 from app.models import User, Section, Books, BookIssue, BookIssueMerge, BookSection
+from app.utils import send_pdf_to_users, pdfReport
 import seaborn as sns
 import os
 import datetime
 from sqlalchemy import func, and_, or_, desc
 import matplotlib.pyplot as plt
 from flask_caching import Cache
-# import time
-
+from io import StringIO 
+import csv
 
 config = {
     "DEBUG": True,
@@ -59,7 +60,6 @@ def profile():
     return render_template('profile.html', user=user)
 
     
-from .utils import send_pdf_to_users, pdfReport
 
 @app.route("/sendProfile", methods=["GET", "POST"])
 def sendProfile():
@@ -305,11 +305,29 @@ def allBooks():
             bookSec = BookSection.query.all()
             userid = request.args.get('userid')
             return render_template("allBooks.html", books=bookSec, userid = userid, message = "You have already requested maximum limit 5 books. Please return book or wait for approval")
-
     else:
         bookSec = BookSection.query.all()
         userid = request.args.get('userid')
         return render_template("allBooks.html", books=bookSec, userid = userid)
+
+
+@app.route("/sendCSV", methods=["GET", "POST"])
+def sendCSV():
+    book_issues = BookIssue.query.filter_by(UserId=session['user_id']).all()
+    si = StringIO()
+    writer = csv.writer(si)
+    writer.writerow(["IssueId", "UserId", "BookId", "SectionId", "RequestDate", "Days", "IssueDate", "IssueStatus", "LastIssueStatusDate", "Rating", "Review"])
+    for issue in book_issues:
+        writer.writerow([
+            issue.IssueId, issue.UserId, issue.BookId, issue.SectionId, issue.RequestDate,
+            issue.Days, issue.IssueDate, issue.IssueStatus, issue.LastIssueStatusDate,
+            issue.Rating, issue.Review
+        ])
+    si.seek(0)
+    response = make_response(si.getvalue())
+    response.headers['Content-Disposition'] = 'attachment; filename=book_issues.csv'
+    response.headers['Content-type'] = 'text/csv'    
+    return response
 
 @app.route("/myBooks", methods=["GET","POST"])
 def myBooks():
@@ -405,13 +423,10 @@ def requestedBooks():
 def adminStats():
     if 'admin_id' not in session:
         return redirect(url_for('librarianLogin'))
-    # users = db.session.query(func.count()).filter(User.Role == "user").scalar()
-    # admins = db.session.query(func.count()).filter(User.Role == "admin").scalar()
     user_type = db.session.query(User.Role, func.count()).group_by(User.Role).order_by(func.count().desc()).all()
     roles, counts = zip(*user_type)
     plt.figure(figsize=(8, 6))
     plt.pie(counts, labels=roles, autopct='%1.1f%%', startangle=140, colors=sns.color_palette("bright"), textprops={'fontsize': 12})
-    # plt.title('Distribution of Users by Role', fontsize=14)
 
     plt.axis('equal')
     plt.savefig('app/static/Graphs/graph1.png')
@@ -469,13 +484,10 @@ def userStats():
     if 'user_id' not in session:
         return redirect(url_for('userLogin'))
     requestStatus = db.session.query(BookIssueMerge.IssueStatus, func.count()).filter(and_(BookIssueMerge.UserId == session['user_id'])).group_by(BookIssueMerge.IssueStatus).order_by(func.count().desc()).all()
-    # user_type = db.session.query(User.Role, func.count()).group_by(User.Role).order_by(func.count().desc()).all()
     try:
         roles, counts = zip(*requestStatus)
         plt.figure(figsize=(8, 6))
         plt.pie(counts, labels=roles, autopct='%1.1f%%', startangle=140, colors=sns.color_palette("bright"), textprops={'fontsize': 12})
-        # plt.title('', fontsize=14)
-
         plt.axis('equal')
         plt.savefig('app/static/Graphs/graph1.png')
     
@@ -503,7 +515,6 @@ def userStats():
     sns.barplot(x=labels, y=counts, palette='viridis')
     plt.xlabel('Category', fontsize=12)
     plt.ylabel('Count', fontsize=12)
-    # plt.title('Number of Books and Sections', fontsize=14)
 
     for i, count in enumerate(counts):
         plt.text(i, count + 0.1, str(count), ha='center', va='bottom', fontsize=10)

@@ -151,6 +151,9 @@
           </div>
           {% endfor %}
         </div>
+        <form action="/sendCSV" method="post" class="row gy-3 gy-xxl-4">
+          <button type="submit" class="btn btn-primary">Download CSV</button>
+        </form>
         {% include 'footer.html' %}
       </div>
     </div>

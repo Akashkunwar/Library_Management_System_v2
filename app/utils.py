@@ -2,6 +2,15 @@
 import os
 import datetime
 import pdfkit
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email import encoders
+import os
+import logging
+from app.models import User
+from flask import url_for
 
 def delete_file_if_exists(file_path):
     if os.path.exists(file_path):
@@ -23,13 +32,22 @@ def pdfReport():
     except:
         pdfkit.from_url('http://127.0.0.1:5000/requestedBooks', 'Mislinious/Books.pdf')
 
-import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from email.mime.base import MIMEBase
-from email import encoders
-import os
-import logging
+
+def pdfReports():
+    users = User.query.all()
+    for user in users:
+        user_id = user.id
+        email = user.email
+
+        stats_url = url_for('userStats', _external=True) + f"?user_id={user_id}"
+
+        try:
+            pdf_path = f'Mislinious/Stats_{user_id}.pdf'
+            pdfkit.from_url(stats_url, pdf_path)
+            send_pdf_to_users(pdf_path, email, 'Your Monthly Report', 'Here is your monthly report.')
+        except Exception as e:
+            logging.error(f"Error generating or sending PDF for user {user_id}: {e}")
+
 
 def send_pdf_to_users(pdf_path, recipient_email, subject, body):
     try:
