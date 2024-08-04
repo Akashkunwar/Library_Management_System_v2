@@ -313,19 +313,16 @@ def allBooks():
 
 @app.route("/sendCSV", methods=["GET", "POST"])
 def sendCSV():
-    book_issues = BookIssue.query.filter_by(UserId=session['user_id']).all()
+    book_details = BookIssueMerge.query.filter_by(UserId=session['user_id']).all()
     si = StringIO()
     writer = csv.writer(si)
-    writer.writerow(["IssueId", "UserId", "BookId", "SectionId", "RequestDate", "Days", "IssueDate", "IssueStatus", "LastIssueStatusDate", "Rating", "Review"])
-    for issue in book_issues:
-        writer.writerow([
-            issue.IssueId, issue.UserId, issue.BookId, issue.SectionId, issue.RequestDate,
-            issue.Days, issue.IssueDate, issue.IssueStatus, issue.LastIssueStatusDate,
-            issue.Rating, issue.Review
+    writer.writerow([ "IssueId", "UserId", "BookId", "SectionId", "RequestDate", "Days", "IssueDate", "IssueStatus", "LastIssueStatusDate", "Book_Title", "Author", "UserName", "Section_Title", "Book_Link",])
+    for bkd in book_details:
+        writer.writerow([bkd.IssueId,bkd.UserId,bkd.BookId,bkd.SectionId,bkd.RequestDate,bkd.Days,bkd.IssueDate,bkd.IssueStatus,bkd.LastIssueStatusDate,bkd.Book_Title,bkd.Author,bkd.UserName,bkd.Section_Title,bkd.Book_Link
         ])
     si.seek(0)
     response = make_response(si.getvalue())
-    response.headers['Content-Disposition'] = 'attachment; filename=book_issues.csv'
+    response.headers['Content-Disposition'] = 'attachment; filename=book_details.csv'
     response.headers['Content-type'] = 'text/csv'    
     return response
 
