@@ -1,6 +1,5 @@
 from app import db
 import datetime
-# Define your SQLAlchemy models here
 
 class User(db.Model):
     __tablename__ = 'user'
@@ -20,6 +19,7 @@ class User(db.Model):
     City = db.Column(db.Text)
     Linkedin = db.Column(db.Text)
     Favourate_Books = db.Column(db.Text)
+    lastLogin = db.Column(db.Date)
 
 class Section(db.Model):
     __tablename__ = 'section'

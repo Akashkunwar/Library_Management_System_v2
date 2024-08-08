@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 from flask_caching import Cache
 from io import StringIO 
 import csv
+from datetime import datetime
 
 config = {
     "DEBUG": True,
@@ -99,6 +100,9 @@ def userLogin():
             if user:
                 if user.Password == data["password"] and user.Role == 'user':
                     session['user_id'] = user.UserId
+                    user = User.query.get(user.UserId)
+                    user.lastLogin = datetime.utcnow().date()
+                    db.session.commit()
                     return redirect(url_for('myBooks'))
                 else:
                     return render_template("user-login.html", error="Wrong Password")
