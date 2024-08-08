@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 from flask_caching import Cache
 from io import StringIO 
 import csv
-from datetime import datetime
+from datetime import datetime, date
 
 config = {
     "DEBUG": True,
@@ -22,9 +22,17 @@ config = {
 app.config.from_mapping(config)
 cache = Cache(app)
 
+from app.models import User
+def testete():
+    today = date.today()
+    # Query to get all Users where Email is not null and lastLogin is not today's date
+    email_list = [user.Email for user in User.query.filter(User.Email.isnot(None),User.lastLogin != today).all()]
+    print(email_list)
+
 @app.route("/", methods=["GET", "POST"])
 @cache.cached(timeout=600)
 def home():
+    testete()
     # time.sleep(5)
     session.clear()
     return render_template("start.html")
@@ -103,6 +111,7 @@ def userLogin():
                     user = User.query.get(user.UserId)
                     user.lastLogin = datetime.utcnow().date()
                     db.session.commit()
+                    print("Today Date updated")
                     return redirect(url_for('myBooks'))
                 else:
                     return render_template("user-login.html", error="Wrong Password")
