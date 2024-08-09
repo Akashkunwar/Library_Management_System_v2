@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Add-Section</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <link rel="stylesheet" href="/static/add-section.css" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -37,7 +38,7 @@
     </style>
   </head>
   <body>
-    <div>
+    <div id="app">
       {% include header %}
 
       <div style="margin: 40px; text-align: center">
@@ -74,8 +75,15 @@
           </div>
         </div>
       </div>
-
-      {% include 'footer.html' %}
+      <footer-component></footer-component>
     </div>
+    <script>
+      let app = Vue.createApp({});
+
+      app.component("footer-component", {
+        template: `{% include 'footer.html' %}`,
+      });
+      app.mount("#app");
+    </script>
   </body>
 </html>

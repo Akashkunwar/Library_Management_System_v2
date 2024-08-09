@@ -15,7 +15,8 @@
 />
   </head>
   <body>
-    {% include 'headerAdmin.html' %}
+    <div id="app">
+      <header-component></header-component>
     <div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins">
       <div class="wrapper wrapper--w680">
         <div class="card card-4">
@@ -135,7 +136,6 @@
     </div>
 
     <script src="vendor/jquery/jquery.min.js"></script>
-
     <script src="vendor/select2/select2.min.js"></script>
     <script src="vendor/datepicker/moment.min.js"></script>
     <script src="vendor/datepicker/daterangepicker.js"></script>
@@ -195,8 +195,20 @@
         </div>
       </div>
     </div>
-
     <div id="automa-palette"></div>
-    {% include 'footer.html' %}
+      <footer-component></footer-component>
+      </div>
+    <script>
+      let app = Vue.createApp({});
+
+      app.component("header-component", {
+        template: `{% include 'headerAdmin.html' %}`,
+      });
+
+      app.component("footer-component", {
+        template: `{% include 'footer.html' %}`,
+      });
+      app.mount("#app");
+    </script>
   </body>
 </html>

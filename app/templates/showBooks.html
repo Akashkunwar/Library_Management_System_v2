@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Add-Section</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <link rel="stylesheet" href="/static/add-section.css" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -15,8 +16,8 @@
     />
   </head>
   <body>
-    <div>
-      {% include 'headerAdmin.html' %}
+    <div id="app">
+      <header-component></header-component>
       <div>
         <div class="main-container">
           {% for book in books %}
@@ -63,12 +64,95 @@
               </button>
             </form>
           </div>
-          {% include 'editBookPopup.html' %} {% include 'showBookPopup.html' %}
+          <form
+            id="editBooksPopup{{book.Books_BookId}}"
+            class="popup"
+            action="/updateBooks/{{book.Books_BookId}}"
+            method="post"
+          >
+            <div class="popup-content">
+              <h1>Edit Books</h1>
+              <div>
+                <h4>Book Title :</h4>
+                <input
+                  type="text"
+                  name="Title"
+                  placeholder="{{book.Books_Title}}"
+                  required
+                />
+              </div>
+              <div>
+                <h4>Author :</h4>
+                <input
+                  type="text"
+                  name="Author"
+                  placeholder="{{book.Books_Author}}"
+                  required
+                />
+              </div>
+              <div>
+                <h4>Content :</h4>
+                <input type="text" name="Content" placeholder="Link" required />
+              </div>
+              <div>
+                <h4>Book Section :</h4>
+                <p id="current-section">{{book.Section_Title}}</p>
+              </div>
+              <div class="buttons">
+                <button class="btn btn-outline-primary" type="submit">
+                  save
+                </button>
+                <button
+                  class="btn btn-primary"
+                  id="closeEditBooksPopup{{book.Books_BookId}}"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </form>
+          <div id="showBooksPopup{{book.BookId}}" class="popup">
+            <div class="popup-content">
+              <h1>History Book class 10</h1>
+              <div id="current-section">
+                <h4>Book Title : {{book.Books_Title}}</h4>
+                <h4>Book Author : {{book.Books_Author}}</h4>
+                <h4>Book Section : {{book.Section_Title}}</h4>
+                <h4>
+                  Link :
+                  <a
+                    href="{{ url_for('download_book', filename=book.Books_ImageLink) }}"
+                    >Show Book</a
+                  >
+                </h4>
+                <div class="buttons">
+                  <button
+                    class="btn btn-primary"
+                    id="closeShowBooksPopup{{book.BookId}}"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
           {% endfor %}
         </div>
-        {% include 'footer.html' %}
+        <footer-component></footer-component>
       </div>
     </div>
+    <script>
+      let app = Vue.createApp({});
+
+      app.component("header-component", {
+        template: `{% include 'headerAdmin.html' %}`,
+      });
+
+      app.component("footer-component", {
+        template: `{% include 'footer.html' %}`,
+      });
+      app.mount("#app");
+    </script>
     <script>
       const mainContainer = document.querySelector(".main-container");
       mainContainer.addEventListener("click", function (event) {

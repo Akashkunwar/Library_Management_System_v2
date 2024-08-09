@@ -65,10 +65,11 @@ def profile():
         user.Name = data['inputFirstName'] + ' ' + data['inputLastName']
 
         db.session.commit()
-
-    return render_template('profile.html', user=user)
-
-    
+    if 'admin_id' in session:
+        return render_template('profile.html', header = "headerAdmin.html",user=user)
+    else:
+        return render_template('profile.html', header = "header.html",user=user)
+        
 
 @app.route("/sendProfile", methods=["GET", "POST"])
 def sendProfile():
@@ -307,7 +308,7 @@ def allBooks():
         count_query = db.session.query(func.count()).filter(and_(BookIssue.UserId == session['user_id'],or_(BookIssue.IssueStatus == 'requested',BookIssue.IssueStatus == 'Approved'))).scalar()
         print(count_query)
         if count_query<5:
-            requstBook = BookIssue(UserId=session['user_id'], BookId=data['bookid'], SectionId=data['sectionId'], Days=data['days'], IssueStatus = 'requested', IssueDate = datetime.datetime.today().date())
+            requstBook = BookIssue(UserId=session['user_id'], BookId=data['bookid'], SectionId=data['sectionId'], Days=data['days'], IssueStatus = 'requested')
             db.session.add(requstBook)
             db.session.commit()
 

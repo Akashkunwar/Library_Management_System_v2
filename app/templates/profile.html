@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profile</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <link
       rel="stylesheet"
       href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -14,7 +15,8 @@
     />
   </head>
   <body>
-    {% include 'headerAdmin.html' %}
+    <div id="app">
+      {% include header %}
     <section class="bg-light py-3 py-md-5 py-xl-8">
       <div class="container">
         <div class="row gy-4 gy-lg-0">
@@ -118,7 +120,6 @@
                   <div class="card-header text-bg-primary">Favourate Books</div>
                   <div class="card-body">
                     <span class="badge text-bg-primary">{{ user.Favourate_Books }}</span>
-                    <!-- <span class="badge text-bg-primary">SCSS</span> -->
                   </div>
                 </div>
               </div>
@@ -441,6 +442,15 @@
       </div>
     </section>
     <script src="https://unpkg.com/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    {% include 'footer.html' %}
+    <footer-component></footer-component>
+    </div>
+    <script>
+      let app = Vue.createApp({});
+
+      app.component("footer-component", {
+        template: `{% include 'footer.html' %}`,
+      });
+      app.mount("#app");
+    </script>
   </body>
 </html>
