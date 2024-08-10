@@ -62,7 +62,8 @@ def profile():
                 attr_name = key.replace('input', '')
                 setattr(user, attr_name, value)
 
-        user.Name = data['inputFirstName'] + ' ' + data['inputLastName']
+        if data['inputFirstName'] + ' ' + data['inputLastName'] != ' ':
+            user.Name = data['inputFirstName'] + ' ' + data['inputLastName']
 
         db.session.commit()
     if 'admin_id' in session:
@@ -73,7 +74,6 @@ def profile():
 
 @app.route("/sendProfile", methods=["GET", "POST"])
 def sendProfile():
-
     if 'admin_id' not in session and 'user_id' not in session:
         return redirect(url_for('home'))
 
@@ -90,12 +90,12 @@ def sendProfile():
 
     if request.method == 'POST':
         try:
-            pdfReport()
+            pdfReport() 
             send_pdf_to_users("Mislinious/Books.pdf", user.Email, 'Books', 'Book Status')
             send_pdf_to_users("Mislinious/Stats.pdf", user.Email, 'Stats', 'Status')
         except:
+            print('Some error')
             pass
-        print(user.Email)
     return render_template('profile.html', user=user)
 
 @app.route("/user-login", methods = ["GET","POST"])
