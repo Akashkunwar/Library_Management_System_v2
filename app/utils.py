@@ -53,8 +53,8 @@ def send_pdf_to_users(pdf_path, recipient_email, subject, body):
     try:
         logging.info("Task send_pdf_to_users started")
         
-        sender_email = 'gnspdc@gmail.com'
-        sender_password = 'bicgpthxanxunafk'
+        sender_email = 'putYourEmailHere@gmail.com'
+        sender_password = 'putYourPasswordHere'
 
         msg = MIMEMultipart()
         msg['From'] = sender_email
