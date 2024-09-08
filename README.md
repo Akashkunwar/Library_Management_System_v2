@@ -146,6 +146,9 @@ The Library Management System is a robust multi-user application designed to man
     - Dummy User: `dummy` / `dummy`
 3. **Explore** the new and existing features such as section management, book management, issuing and returning books, and advanced functionalities like Redis caching, task scheduling, and book rating.
 
+## Login Page
+![Login Page](https://raw.githubusercontent.com/Akashkunwar/Library_Management_System_v2/main/Home%20Page%20Demo.png)
+
 ## ER Diagram
 ![ER Diagram](https://raw.githubusercontent.com/Akashkunwar/Library_Management_System_v2/main/ERD.png)
 
